@@ -1,0 +1,4 @@
+interface:
+  display_name: "Govern FHIR Data Utilities"
+  short_description: "Keep FHIR catalogs, builders and releases complete"
+  default_prompt: "Use $govern-fhir-data-utilities to migrate or change shared FHIR data contracts safely."

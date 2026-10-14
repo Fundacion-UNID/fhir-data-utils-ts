@@ -1,0 +1,65 @@
+// Copyright 2026 Conéctate Soluciones y Aplicaciones SL under the Apache License, Version 2.0.
+// File: src/models/interoperable-claims/care-plan-claims.ts
+
+import type { ClaimSpec } from './claim-types.js';
+
+export const CarePlanClaim = {
+  ActivityCode: 'CarePlan.activity-code',
+  ActivityDate: 'CarePlan.activity-date',
+  ActivityReference: 'CarePlan.activity-reference',
+  BasedOn: 'CarePlan.based-on',
+  CareTeam: 'CarePlan.care-team',
+  Category: 'CarePlan.category',
+  CategoryText: 'CarePlan.category-text',
+  CategoryDisplay: 'CarePlan.category-display',
+  Condition: 'CarePlan.condition',
+  Date: 'CarePlan.date',
+  Encounter: 'CarePlan.encounter',
+  Goal: 'CarePlan.goal',
+  Identifier: 'CarePlan.identifier',
+  Intent: 'CarePlan.intent',
+  PartOf: 'CarePlan.part-of',
+  Patient: 'CarePlan.patient',
+  Performer: 'CarePlan.performer',
+  Replaces: 'CarePlan.replaces',
+  Status: 'CarePlan.status',
+  Subject: 'CarePlan.subject',
+  Note: 'CarePlan.note',
+  Description: 'CarePlan.description',
+  PeriodStart: 'CarePlan.period-start',
+  PeriodEnd: 'CarePlan.period-end',
+  ActivityStatus: 'CarePlan.activity-status',
+  ActivityStatusReason: 'CarePlan.activity-status-reason',
+  ActivityDoNotPerform: 'CarePlan.activity-do-not-perform',
+  ActivityOutcome: 'CarePlan.activity-outcome',
+  ActivityLocationDisplay: 'CarePlan.activity-location-display',
+  ActivityTimingFrequency: 'CarePlan.activity-timing-frequency',
+  ActivityTimingPeriod: 'CarePlan.activity-timing-period',
+  ActivityTimingPeriodUnit: 'CarePlan.activity-timing-period-unit',
+} as const;
+
+export type CarePlanClaimKey = typeof CarePlanClaim[keyof typeof CarePlanClaim];
+
+export const CarePlanClaimSpecs: ClaimSpec[] = [
+  { key: CarePlanClaim.ActivityCode, meaning: 'Planned activity code token.', example: 'http://snomed.info/sct|229065009' },
+  { key: CarePlanClaim.ActivityDate, meaning: 'Planned activity date/time.', example: '2026-06-15T09:00:00Z' },
+  { key: CarePlanClaim.ActivityReference, meaning: 'Activity reference.', example: 'ServiceRequest/sr-1' },
+  { key: CarePlanClaim.BasedOn, meaning: 'Based-on reference.', example: 'CarePlan/plan-parent' },
+  { key: CarePlanClaim.CareTeam, meaning: 'Care team references (CSV).', example: 'CareTeam/team-1' },
+  { key: CarePlanClaim.Category, meaning: 'Care plan category token.', example: 'http://snomed.info/sct|736373009' },
+  { key: CarePlanClaim.CategoryText, meaning: 'Local-language care plan category label.', example: 'Plan de control de peso' },
+  { key: CarePlanClaim.CategoryDisplay, meaning: 'Canonical/international care plan category display.', example: 'Weight management plan' },
+  { key: CarePlanClaim.Condition, meaning: 'Condition references (CSV).', example: 'Condition/cond-1' },
+  { key: CarePlanClaim.Date, meaning: 'Care plan creation or period date.', example: '2026-06-01T10:00:00Z' },
+  { key: CarePlanClaim.Encounter, meaning: 'Encounter reference.', example: 'Encounter/enc-1' },
+  { key: CarePlanClaim.Goal, meaning: 'Goal references (CSV).', example: 'Goal/goal-1' },
+  { key: CarePlanClaim.Identifier, meaning: 'Business identifier.', example: 'careplan-001' },
+  { key: CarePlanClaim.Intent, meaning: 'Care plan intent.', example: 'plan' },
+  { key: CarePlanClaim.PartOf, meaning: 'Parent care plan references (CSV).', example: 'CarePlan/plan-parent' },
+  { key: CarePlanClaim.Patient, meaning: 'Patient reference.', example: 'did:web:patient.example.org' },
+  { key: CarePlanClaim.Performer, meaning: 'Performer references (CSV).', example: 'Practitioner/prac-1' },
+  { key: CarePlanClaim.Replaces, meaning: 'Replaced care plan references (CSV).', example: 'CarePlan/old-plan' },
+  { key: CarePlanClaim.Status, meaning: 'Care plan status.', example: 'active' },
+  { key: CarePlanClaim.Subject, meaning: 'Canonical subject reference.', example: 'did:web:patient.example.org' },
+  { key: CarePlanClaim.Note, meaning: 'Clinical note text.', example: 'Daily home exercise plan.' },
+];

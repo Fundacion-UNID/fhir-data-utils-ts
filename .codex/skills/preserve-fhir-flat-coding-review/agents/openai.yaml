@@ -1,0 +1,4 @@
+interface:
+  display_name: "Preserve FHIR Flat Coding Review"
+  short_description: "Keep local text and coding proposals canonical"
+  default_prompt: "Use $preserve-fhir-flat-coding-review to implement or audit flat-claim coding review without duplicated literals."

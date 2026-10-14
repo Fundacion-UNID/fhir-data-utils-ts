@@ -1,0 +1,4 @@
+interface:
+  display_name: "Govern FHIR Observation Components"
+  short_description: "Preserve canonical Observation component and index contracts"
+  default_prompt: "Use $govern-fhir-observation-components to implement or audit FHIR Observation flat claims, component indexes, vital signs, or R4/R5 projections without custom per-scale claims."

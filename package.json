@@ -1,0 +1,174 @@
+{
+  "name": "fhir-data-utils-ts",
+  "version": "0.6.20",
+  "description": "FHIR-version-neutral flat-claim and SearchParameter data utilities",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./coding-review-flat-claims": {
+      "types": "./dist/coding-review-flat-claims.d.ts",
+      "default": "./dist/coding-review-flat-claims.js"
+    },
+    "./flat-claim-resource-graph": {
+      "types": "./dist/flat-claim-resource-graph.d.ts",
+      "default": "./dist/flat-claim-resource-graph.js"
+    },
+    "./care-emergency-alert": {
+      "types": "./dist/care-emergency-alert.d.ts",
+      "default": "./dist/care-emergency-alert.js"
+    },
+    "./search-parameters": {
+      "types": "./dist/search-parameters.d.ts",
+      "default": "./dist/search-parameters.js"
+    },
+    "./observation-claims": {
+      "types": "./dist/observation-claims.d.ts",
+      "default": "./dist/observation-claims.js"
+    },
+    "./vital-sign-observations": {
+      "types": "./dist/vital-sign-observations.d.ts",
+      "default": "./dist/vital-sign-observations.js"
+    },
+    "./claims": {
+      "types": "./dist/claims/index.d.ts",
+      "default": "./dist/claims/index.js"
+    },
+    "./claim-helpers": {
+      "types": "./dist/claim-helpers/index.d.ts",
+      "default": "./dist/claim-helpers/index.js"
+    },
+    "./converters": {
+      "types": "./dist/converters/index.d.ts",
+      "default": "./dist/converters/index.js"
+    },
+    "./fhir-types": {
+      "types": "./dist/fhir-types.d.ts",
+      "default": "./dist/fhir-types.js"
+    },
+    "./fhir-values": {
+      "types": "./dist/fhir-values.d.ts",
+      "default": "./dist/fhir-values.js"
+    },
+    "./hl7-v2-0203-identifier-types": {
+      "types": "./dist/hl7-v2-0203-identifier-types.d.ts",
+      "default": "./dist/hl7-v2-0203-identifier-types.js"
+    },
+    "./fhir-search-parameters": {
+      "types": "./dist/fhir-search-parameters.d.ts",
+      "default": "./dist/fhir-search-parameters.js"
+    },
+    "./fhir-bundle": {
+      "types": "./dist/fhir-bundle.d.ts",
+      "default": "./dist/fhir-bundle.js"
+    },
+    "./fhir-tokens": {
+      "types": "./dist/fhir-tokens.d.ts",
+      "default": "./dist/fhir-tokens.js"
+    },
+    "./related-person": {
+      "types": "./dist/related-person.d.ts",
+      "default": "./dist/related-person.js"
+    },
+    "./search-models": {
+      "types": "./dist/search-models/index.d.ts",
+      "default": "./dist/search-models/index.js"
+    },
+    "./terminology-models": {
+      "types": "./dist/terminology-models/index.d.ts",
+      "default": "./dist/terminology-models/index.js"
+    },
+    "./clinical-terminology": {
+      "types": "./dist/clinical-terminology.d.ts",
+      "default": "./dist/clinical-terminology.js"
+    },
+    "./clinical-artifact-coded-options": {
+      "types": "./dist/clinical-artifact-coded-options.d.ts",
+      "default": "./dist/clinical-artifact-coded-options.js"
+    },
+    "./immunization-flat-claims": {
+      "types": "./dist/immunization-flat-claims.d.ts",
+      "default": "./dist/immunization-flat-claims.js"
+    },
+    "./immunization-reminder-plan": {
+      "types": "./dist/immunization-reminder-plan.d.ts",
+      "default": "./dist/immunization-reminder-plan.js"
+    },
+    "./builders": {
+      "types": "./dist/builders/index.d.ts",
+      "default": "./dist/builders/index.js"
+    },
+    "./builders/immunization": {
+      "types": "./dist/builders/immunization-graph.d.ts",
+      "default": "./dist/builders/immunization-graph.js"
+    },
+    "./group-r5": {
+      "types": "./dist/group-r5.d.ts",
+      "default": "./dist/group-r5.js"
+    },
+    "./healthcare-service-specialty-map": {
+      "types": "./dist/healthcare-service-specialty-map.d.ts",
+      "default": "./dist/healthcare-service-specialty-map.js"
+    },
+    "./health-credential-qr": {
+      "types": "./dist/health-credential-qr.d.ts",
+      "default": "./dist/health-credential-qr.js"
+    },
+    "./fhir-temporal-presentation": {
+      "types": "./dist/fhir-temporal-presentation.d.ts",
+      "default": "./dist/fhir-temporal-presentation.js"
+    },
+    "./research-study-r5": {
+      "types": "./dist/research-study-r5.d.ts",
+      "default": "./dist/research-study-r5.js"
+    },
+    "./imaging-types": {
+      "types": "./dist/imaging-types.d.ts",
+      "default": "./dist/imaging-types.js"
+    },
+    "./subscription-r5": {
+      "types": "./dist/subscription-r5.d.ts",
+      "default": "./dist/subscription-r5.js"
+    },
+    "./constants": {
+      "types": "./dist/constants/index.d.ts",
+      "default": "./dist/constants/index.js"
+    },
+    "./data": {
+      "types": "./dist/data/index.d.ts",
+      "default": "./dist/data/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    ".codex/skills",
+    "docs",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='dist/converters/*.js' --test-coverage-include='dist/builders/*.js' --test-coverage-include='dist/fhir-*.js' --test-coverage-exclude='dist/**/*.data.js' --test-coverage-lines=95 --test-coverage-functions=80 --test-coverage-branches=40 tests/*.test.mjs",
+    "check": "npm run typecheck && npm test && npm run test:coverage",
+    "prepack": "npm run check"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}
