@@ -8,12 +8,16 @@ const formData = Object.freeze({
   status: 'draft',
   intent: 'proposal',
   priority: 'urgent',
+  category: 'http://terminology.hl7.org/CodeSystem/communication-category|notification',
   subject: 'Patient/patient-one',
+  about: Object.freeze(['DocumentReference/supporting-image-one', 'DocumentReference/supporting-pdf-one']),
   encounter: 'Encounter/encounter-one',
   requester: 'PractitionerRole/secretary-one',
   recipients: Object.freeze(['Patient/patient-one', 'RelatedPerson/family-one']),
   informationProviders: Object.freeze(['PractitionerRole/doctor-one']),
   authoredOn: '2026-10-05T18:30:00Z',
+  occurrencePeriodStart: '2026-10-05T18:30:00Z',
+  occurrencePeriodEnd: '2026-10-06T18:30:00Z',
   payloadReference: 'DocumentReference/family-update-one',
   note: 'Call the authorized family member before release.',
 })
@@ -36,6 +40,8 @@ test('drives a reusable CommunicationRequest form into canonical flat claims', (
   const claims = fhir.communicationRequestFormDataToFlatClaims(formData)
   assert.equal(claims[fhir.CommunicationRequestClaim.Status], formData.status)
   assert.equal(claims[fhir.CommunicationRequestClaim.Intent], formData.intent)
+  assert.equal(claims[fhir.CommunicationRequestClaim.Category], formData.category)
+  assert.equal(claims[fhir.CommunicationRequestClaim.About], formData.about.join(','))
   assert.equal(claims[fhir.CommunicationRequestClaim.Recipient], formData.recipients.join(','))
   assert.equal(claims[fhir.CommunicationRequestClaim.InformationProvider], formData.informationProviders.join(','))
   assert.equal(claims[fhir.CommunicationRequestClaim.PayloadReference], formData.payloadReference)
@@ -51,6 +57,7 @@ test('round-trips the same claims through the published R4 and R5 projections', 
   assert.equal(r4.payload[0].contentReference.reference, formData.payloadReference)
   assert.equal(r5.intent, formData.intent)
   assert.equal(r5.informationProvider[0].reference, formData.informationProviders[0])
+  assert.deepEqual(r5.occurrencePeriod, { start: formData.occurrencePeriodStart, end: formData.occurrencePeriodEnd })
   const r4Claims = fhir.communicationRequestFhirR4ToFlat(r4)
   assert.equal(r4Claims[fhir.CommunicationRequestClaim.Recipient], claims[fhir.CommunicationRequestClaim.Recipient])
   assert.equal(r4Claims[fhir.CommunicationRequestClaim.InformationProvider], claims[fhir.CommunicationRequestClaim.InformationProvider])
@@ -80,4 +87,13 @@ test('preserves fields shared by the published R4 and R5 CommunicationRequest de
 
 test('rejects an empty audience', () => {
   assert.throws(() => fhir.communicationRequestFormDataToFlatClaims({ ...formData, recipients: [] }), /communication_request_recipient_required/)
+})
+
+test('rejects competing occurrence choices and an inverted period', () => {
+  assert.throws(() => fhir.communicationRequestFormDataToFlatClaims({
+    ...formData, occurrence: formData.authoredOn,
+  }), /communication_request_occurrence_choice_invalid/)
+  assert.throws(() => fhir.communicationRequestFormDataToFlatClaims({
+    ...formData, occurrencePeriodStart: formData.occurrencePeriodEnd, occurrencePeriodEnd: formData.occurrencePeriodStart,
+  }), /communication_request_occurrence_period_invalid/)
 })

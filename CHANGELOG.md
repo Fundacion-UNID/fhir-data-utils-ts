@@ -5,6 +5,12 @@
 - Re-establish the public repository from a clean source snapshot while
   retaining this changelog as the package release record.
 
+## 0.6.21 - 2026-10-21
+
+- Add the shared CommunicationRequest form, flat-claim and materialization
+  fields needed for categorized public alerts, related attachments and bounded
+  occurrence periods without introducing a proprietary alert resource.
+
 ## 0.6.20 - 2026-10-12
 
 - Export the deduplicated official LOINC Document Ontology subject-matter-

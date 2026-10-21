@@ -20,7 +20,7 @@ export function communicationRequestFlatToFhirR4(claims: FlatClaims): FhirResour
     requester: claims[CommunicationRequestClaim.Requester] ? { reference: claims[CommunicationRequestClaim.Requester] } : undefined,
     sender: firstReference(claims[CommunicationRequestClaim.InformationProvider]),
     recipient: referenceCsv(claims[CommunicationRequestClaim.Recipient]), authoredOn: claims[CommunicationRequestClaim.AuthoredOn],
-    occurrenceDateTime: claims[CommunicationRequestClaim.Occurrence],
+    ...occurrenceToFhir(claims),
     reasonCode: claims[CommunicationRequestClaim.ReasonCode] ? [{ coding: codingListFromCsv(claims[CommunicationRequestClaim.ReasonCode]) }] : undefined,
     reasonReference: referenceCsv(claims[CommunicationRequestClaim.ReasonReference]),
     payload: payloadR4(claims),
@@ -47,7 +47,8 @@ export function communicationRequestFhirR4ToFlat(resource: FhirResource): FlatCl
     [CommunicationRequestClaim.Requester]: referenceToValue(resource.requester as { reference?: string } | undefined),
     [CommunicationRequestClaim.InformationProvider]: referenceToValue(resource.sender as { reference?: string } | undefined),
     [CommunicationRequestClaim.Recipient]: referenceListToCsv(resource.recipient as Array<{ reference?: string }> | undefined),
-    [CommunicationRequestClaim.AuthoredOn]: resource.authoredOn as string | undefined, [CommunicationRequestClaim.Occurrence]: resource.occurrenceDateTime as string | undefined,
+    [CommunicationRequestClaim.AuthoredOn]: resource.authoredOn as string | undefined,
+    ...occurrenceToFlat(resource),
     [CommunicationRequestClaim.ReasonCode]: codingListToCsv((resource.reasonCode as Array<{ coding?: Array<{ system?: string; code?: string }> }> | undefined)?.flatMap(value => value.coding ?? [])),
     [CommunicationRequestClaim.ReasonReference]: referenceListToCsv(resource.reasonReference as Array<{ reference?: string }> | undefined),
     ...payloadToFlat(resource),
@@ -87,7 +88,7 @@ function communicationRequestFlatToFhirR5Resource(claims: FlatClaims): FhirResou
     requester: claims[CommunicationRequestClaim.Requester] ? { reference: claims[CommunicationRequestClaim.Requester] } : undefined,
     recipient: referenceCsv(claims[CommunicationRequestClaim.Recipient]),
     informationProvider: referenceCsv(claims[CommunicationRequestClaim.InformationProvider]),
-    authoredOn: claims[CommunicationRequestClaim.AuthoredOn], occurrenceDateTime: claims[CommunicationRequestClaim.Occurrence],
+    authoredOn: claims[CommunicationRequestClaim.AuthoredOn], ...occurrenceToFhir(claims),
     reason: reasonsR5(claims), payload: payloadR5(claims), note: annotation(claims[CommunicationRequestClaim.Note]),
   }
 }
@@ -113,7 +114,7 @@ function communicationRequestFhirR5ResourceToFlat(resource: FhirResource): FlatC
     [CommunicationRequestClaim.Recipient]: referenceListToCsv(resource.recipient as Array<{ reference?: string }> | undefined),
     [CommunicationRequestClaim.InformationProvider]: referenceListToCsv(resource.informationProvider as Array<{ reference?: string }> | undefined),
     [CommunicationRequestClaim.AuthoredOn]: resource.authoredOn as string | undefined,
-    [CommunicationRequestClaim.Occurrence]: resource.occurrenceDateTime as string | undefined,
+    ...occurrenceToFlat(resource),
     [CommunicationRequestClaim.ReasonCode]: codingListToCsv(reasons?.flatMap(value => value.concept?.coding ?? [])),
     [CommunicationRequestClaim.ReasonReference]: reasons?.map(value => value.reference?.reference).filter((value): value is string => Boolean(value)).join(',') || undefined,
     ...payloadToFlat(resource), [CommunicationRequestClaim.Note]: annotationText(resource.note),
@@ -140,6 +141,22 @@ function optionalBoolean(value?: string): boolean | undefined {
 }
 function annotation(value?: string): Array<{ text: string }> | undefined { return value ? [{ text: value }] : undefined }
 function annotationText(value: unknown): string | undefined { return (value as Array<{ text?: string }> | undefined)?.[0]?.text }
+function occurrenceToFhir(claims: FlatClaims): Record<string, unknown> {
+  const occurrenceDateTime = claims[CommunicationRequestClaim.Occurrence]
+  const start = claims[CommunicationRequestClaim.OccurrencePeriodStart]
+  const end = claims[CommunicationRequestClaim.OccurrencePeriodEnd]
+  if (occurrenceDateTime && (start || end)) throw new TypeError('communication_request_occurrence_choice_invalid')
+  return occurrenceDateTime ? { occurrenceDateTime } : start || end ? { occurrencePeriod: compact({ start, end }) } : {}
+}
+function occurrenceToFlat(resource: FhirResource): FlatClaims {
+  const period = resource.occurrencePeriod as { start?: string; end?: string } | undefined
+  if (resource.occurrenceDateTime && period) throw new TypeError('communication_request_occurrence_choice_invalid')
+  return compact({
+    [CommunicationRequestClaim.Occurrence]: resource.occurrenceDateTime as string | undefined,
+    [CommunicationRequestClaim.OccurrencePeriodStart]: period?.start,
+    [CommunicationRequestClaim.OccurrencePeriodEnd]: period?.end,
+  })
+}
 function payloadR4(claims: FlatClaims): Array<Record<string, unknown>> | undefined {
   if (claims[CommunicationRequestClaim.PayloadReference]) return [{ contentReference: { reference: claims[CommunicationRequestClaim.PayloadReference] } }]
   if (claims[CommunicationRequestClaim.PayloadAttachmentData]) return [{ contentAttachment: attachment(claims) }]
