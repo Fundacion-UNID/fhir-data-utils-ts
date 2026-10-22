@@ -1,6 +1,6 @@
 {
   "name": "fhir-data-utils-ts",
-  "version": "0.6.21",
+  "version": "0.6.22",
   "description": "FHIR-version-neutral flat-claim and SearchParameter data utilities",
   "license": "Apache-2.0",
   "type": "module",

@@ -5,6 +5,15 @@
 - Re-establish the public repository from a clean source snapshot while
   retaining this changelog as the package release record.
 
+## 0.6.22 - 2026-10-22
+
+- Add FHIR-owned flat claims and a lossless R4 extension round trip for the
+  optional US Core Patient race and ethnicity extensions. Preserve OMB and
+  detailed Coding tokens separately from the required human-readable text;
+  derive the official `Patient.race` and `Patient.ethnicity` token-search
+  claims instead of accepting them from a browser; and do not expose these
+  jurisdictional fields as universal demographics or org.schema properties.
+
 ## 0.6.21 - 2026-10-21
 
 - Add the shared CommunicationRequest form, flat-claim and materialization
