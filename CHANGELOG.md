@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add a FHIR-neutral, identifier-free public-health statistics projection for
+  coded human or animal events. Preserve only a coarse date, jurisdiction,
+  code and optional coarse demographics; keep source records, hashes,
+  signatures, SHC issuance, private datasets and free text outside the
+  projection.
+
 - Re-establish the public repository from a clean source snapshot while
   retaining this changelog as the package release record.
 
