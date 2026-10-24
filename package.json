@@ -1,6 +1,6 @@
 {
   "name": "fhir-data-utils-ts",
-  "version": "0.6.22",
+  "version": "0.6.23",
   "description": "FHIR-version-neutral flat-claim and SearchParameter data utilities",
   "license": "Apache-2.0",
   "type": "module",
@@ -122,6 +122,10 @@
     "./fhir-temporal-presentation": {
       "types": "./dist/fhir-temporal-presentation.d.ts",
       "default": "./dist/fhir-temporal-presentation.js"
+    },
+    "./public-health-statistics": {
+      "types": "./dist/public-health-statistics.d.ts",
+      "default": "./dist/public-health-statistics.js"
     },
     "./research-study-r5": {
       "types": "./dist/research-study-r5.d.ts",
