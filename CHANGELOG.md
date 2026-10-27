@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.6.24 - 2026-10-27
+
+- Export one typed, immutable, repository-safe emergency Encounter, Condition
+  and ordered status-update fixture for reuse by portals, SDKs and gateways.
+  The neutral fixture carries no product authorization or family relationship.
 
 - Add a FHIR-neutral, identifier-free public-health statistics projection for
   coded human or animal events. Preserve only a coarse date, jurisdiction,
