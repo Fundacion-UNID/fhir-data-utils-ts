@@ -1,4 +1,4 @@
-// Flow contract: one exported FHIR-neutral emergency fixture is reused by portal, SDK and gateway tests without product-owned clinical literals.
+// Flow contract: one exported FHIR-neutral emergency fixture is reused by downstream consumer tests without consumer-owned clinical literals.
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
@@ -24,8 +24,8 @@ test('exports one immutable in-progress emergency encounter and its ordered upda
   assert.ok(Object.isFrozen(fixture.updates))
 })
 
-test('keeps product authorization and family relationships outside the neutral fixture', () => {
+test('keeps authorization and family relationships outside the neutral fixture', () => {
   const serialized = JSON.stringify(FHIR_DEMO_ARM_FRACTURE_ENCOUNTER_JOURNEY)
 
-  assert.doesNotMatch(serialized, /SOSChain|controller|permission|emergency contact/i)
+  assert.doesNotMatch(serialized, /controller|permission|emergency contact/i)
 })
