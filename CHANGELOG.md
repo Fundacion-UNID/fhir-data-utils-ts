@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Add one linked repository rules index and executable governance contract.
+  Delegate every install, build, test and pack gate to the canonical Node.js
+  26.13.0 runtime skill without changing FHIR behavior, package version or
+  registry state.
+
 ## 0.6.24 - 2026-10-27
 
 - Export one typed, immutable, repository-safe emergency Encounter, Condition

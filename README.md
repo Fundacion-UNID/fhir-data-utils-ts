@@ -8,6 +8,12 @@ Release order is local-first: local tarball consumers, complete local matrix,
 merge and push `main`, publish bottom-up, install exact registry versions, then
 staging. Never commit `file:`, Git or workspace dependencies.
 
+Repository governance starts at [`AGENTS.md`](AGENTS.md); the complete,
+machine-checked rule graph is indexed in
+[`docs/RULES_INDEX.md`](docs/RULES_INDEX.md). All executable Node/npm gates use
+the approved Node.js 26.13.0 runtime described there, while the package
+`engines` range remains consumer compatibility metadata.
+
 ## Public source history
 
 The public repository begins from a clean 2026 source snapshot. The retained
