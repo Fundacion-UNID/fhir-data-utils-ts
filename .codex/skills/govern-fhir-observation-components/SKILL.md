@@ -75,7 +75,9 @@ description: Implement or audit neutral FHIR Observation claim catalogs, vital-s
    Observation with two components in R4 and R5 projection.
 4. Add negative assertions against raw claim literals outside the owning
    catalog and against child-owned containment markers.
-5. Run Node 24, `npm ci`, `npm run check` and `npm pack --dry-run`.
+5. Follow the canonical
+   [`preserve-workspace-node-runtime`](../preserve-workspace-node-runtime/SKILL.md)
+   gate, then run `npm ci`, `npm run check` and `npm pack --dry-run`.
 
 ## Audit migrations completely
 

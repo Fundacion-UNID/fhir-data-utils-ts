@@ -95,7 +95,9 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
 
 ## Change with executable contracts
 
-1. Use Node 24 and run `npm ci` before trusting failures.
+1. Follow the canonical
+   [`preserve-workspace-node-runtime`](../preserve-workspace-node-runtime/SKILL.md)
+   gate and run `npm ci` before trusting failures.
 2. Begin every new or modified test file with the repository flow-contract
    comment.
 3. Write and run the smallest failing test first. Cover success, malformed
