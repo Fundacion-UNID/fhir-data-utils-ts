@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Own the published R5 OperationOutcome issue and severity vocabularies,
+  exact membership guards and minimal native exchange types. Keep HTTP status
+  policy and operational error classes outside this FHIR package.
+
 - Own the standard FHIR Communication category codings and compact tokens.
 
 - Export the canonical IPS document type independently of clinical section codes.

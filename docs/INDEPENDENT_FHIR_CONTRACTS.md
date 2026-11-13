@@ -1,5 +1,16 @@
 # Independent FHIR contracts
 
+`IssueType`, `IssueSeverity` and their coding-system URLs expose the published
+[R5 issue types](https://hl7.org/fhir/R5/valueset-issue-type.html) and
+[R5 severities](https://hl7.org/fhir/R5/valueset-issue-severity.html).
+Exact membership guards reject unknown codes without normalization. The
+deprecated `IssueLevel` name references the same severity catalog.
+`OperationOutcome` and `OperationOutcomeDetails` are minimal native exchange
+projections, not alternative persisted clinical models or full validators.
+Consumers apply their selected FHIR version's constraints; R5 success severity
+must not imply R4 acceptance. HTTP mappings, status decisions and runtime errors
+remain in downstream adapters and SDKs.
+
 `CommunicationCategoryCodes` exposes the standard FHIR Communication categories
 with an explicit coding-system URL, code and compact attribute token.
 
