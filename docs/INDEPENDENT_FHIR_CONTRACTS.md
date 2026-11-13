@@ -1,5 +1,8 @@
 # Independent FHIR contracts
 
+`FHIR_IPS_DOCUMENT_CODE` identifies the IPS document type. It is distinct from
+`FHIR_IPS_SECTION_CODES`, which describe the document's clinical sections.
+
 The root package exports `canonicalizeFhirResource` and
 `FhirCanonicalizationOptions`. The function sorts object keys, preserves array
 order and leaves the input untouched. By default it removes `meta.versionId`;
