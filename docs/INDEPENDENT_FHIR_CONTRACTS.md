@@ -1,5 +1,8 @@
 # Independent FHIR contracts
 
+`CommunicationCategoryCodes` exposes the standard FHIR Communication categories
+with an explicit coding-system URL, code and compact attribute token.
+
 `FHIR_IPS_DOCUMENT_CODE` identifies the IPS document type. It is distinct from
 `FHIR_IPS_SECTION_CODES`, which describe the document's clinical sections.
 

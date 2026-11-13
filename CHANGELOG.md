@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Own the standard FHIR Communication category codings and compact tokens.
+
 - Export the canonical IPS document type independently of clinical section codes.
 
 - Own deterministic FHIR JSON canonicalization and explicit HL7 functional
