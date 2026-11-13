@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Own deterministic FHIR JSON canonicalization and explicit HL7 functional
+  RelatedPerson coding descriptors without importing occupation catalogs or
+  downstream projects. Preserve resource identifiers and significant array order.
+
 - Guard source, emitted modules and the resolved dependency graph against GDC
   dependencies. Keep occupation catalogs outside the generic FHIR utilities.
 

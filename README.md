@@ -252,3 +252,5 @@ Review state comes only from `codingProposals[].status`. A Coding
 it is not a draft, publication or promotion flag. Consumers can use the shared
 review families `allergies-intolerances`, `procedures`, `diagnostics` and
 `immunizations` without product-specific literals.
+
+Independent canonicalization and HL7 functional coding exports are documented in [Independent FHIR contracts](docs/INDEPENDENT_FHIR_CONTRACTS.md).

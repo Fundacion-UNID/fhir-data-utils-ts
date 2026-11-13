@@ -7,6 +7,9 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
 
 ## Keep ownership explicit
 
+- Keep deterministic FHIR canonicalization and HL7 coding descriptors here.
+  Occupation catalogs and their permission projections remain outside this package.
+
 1. Inventory every relevant standards-based source family before declaring a
    migration complete.
 2. Treat `gdc-*` repositories as read-only evidence unless the user explicitly
