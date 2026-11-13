@@ -1,6 +1,8 @@
 /** Repository-safe synthetic IPS document used by portal demos and visual tests. */
 
 const LOINC_SYSTEM = 'http://loinc.org'
+/** LOINC document type for an International Patient Summary; not an IPS section. */
+export const FHIR_IPS_DOCUMENT_CODE = '60591-5' as const
 const SNOMED_SYSTEM = 'http://snomed.info/sct'
 const SUBJECT_REFERENCE = 'Patient/jane-doe-demo'
 

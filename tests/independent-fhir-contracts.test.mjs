@@ -3,6 +3,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import * as fhir from '../dist/index.js'
 
+test('owns the IPS document code independently of its clinical section codes',()=>{
+  assert.equal(fhir.FHIR_IPS_DOCUMENT_CODE,'60591-5')
+  assert.equal(Object.values(fhir.FHIR_IPS_SECTION_CODES).includes(fhir.FHIR_IPS_DOCUMENT_CODE),false)
+})
+
 test('canonicalizes keys while preserving significant array order and the input',()=>{
   assert.equal(typeof fhir.canonicalizeFhirResource,'function')
   const input={resourceType:'Patient',id:'root',meta:{versionId:'old',source:'source'},name:[{id:'name',text:'Z'},{text:'A'}]}

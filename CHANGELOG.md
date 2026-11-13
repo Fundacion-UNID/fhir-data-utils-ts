@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Export the canonical IPS document type independently of clinical section codes.
+
 - Own deterministic FHIR JSON canonicalization and explicit HL7 functional
   RelatedPerson coding descriptors without importing occupation catalogs or
   downstream projects. Preserve resource identifiers and significant array order.
