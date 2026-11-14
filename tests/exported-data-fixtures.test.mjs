@@ -29,5 +29,5 @@ test('exports reusable data fixtures through an explicit data subpath', async ()
 })
 
 test('excludes data-only modules explicitly from executable coverage', () => {
-  assert.match(packageManifest.scripts['test:coverage'], /--test-coverage-exclude='dist\/\*\*\/\*\.data\.js'/)
+  assert.ok(packageManifest.scripts['test:coverage'].split(/\s+/u).includes('--test-coverage-exclude=dist/**/*.data.js'))
 })

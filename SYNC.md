@@ -43,6 +43,14 @@ resource-local `*-text` claim, proposals remain beside that resource's
 display without replacing source text. Consumers import these neutral helpers
 and package-owned fixtures without forking the contract.
 
+Clinical readers reuse the `clinical-resource-view` projections for claim
+fields, resource cards, Composition sections and separate local/international
+labels. They do not confirm coding proposals or grant access. Document
+assembly reuses `buildClinicalDocumentBundle` from `clinical-document-bundle`;
+its Composition-first native output preserves the flat claims as the canonical
+data source. Status and attester references remain descriptive until the
+owning downstream signing and verification workflow establishes evidence.
+
 Release order is indivisible: local tarballs, complete local tests, merge and
 push the validated branch to `main`, publish, install exact registry versions
 downstream, then promote environments. Never commit a `file:`, Git, workspace

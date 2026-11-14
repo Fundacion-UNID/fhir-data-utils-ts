@@ -238,6 +238,20 @@ FHIR R4 and FHIR R5. It intentionally exposes no R6 or combined R5/R6 adapter.
 
 ## Clinical documents and Encounter journeys
 
+The `clinical-resource-view` subpath exports
+`toClinicalResourceClaimFieldViews`, `toClinicalResourceCardView`,
+`toClinicalSectionViews` and `getLocalTextAndIntDisplay`. These pure projections
+retain supplied local wording alongside international displays. Rendering a
+label does not accept a coding proposal or authorize access to another record.
+
+The `clinical-document-bundle` subpath exports `buildClinicalDocumentBundle`
+and `FHIR_IPS_DOCUMENT_TYPE_CLAIM`; the builder is also available through
+`builders` and the package root. It assembles a Composition-first native
+document from independent entries with canonical flat claims. The native
+Bundle is an explicit exchange projection, not a second persistence model.
+The caller supplies document status, authors and attester references; final
+status and an attester reference do not establish a verified signature.
+
 A FHIR document always starts with `Composition`; `Encounter` is its optional
 care context through `Composition.encounter`, not the document root. The same
 section viewer can therefore render an IPS, emergency note, progress note or

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Expose the clinical local-text/international-display reader so summaries can
+  retain both supplied labels without a legacy utility dependency. Preserve
+  manual text, canonical claim precedence and duplicate-label suppression;
+  displaying a label does not confirm a terminology coding.
+- Add neutral clinical section/card projections and pure document assembly for
+  shared clinical editors. Preserve flat `LOINC|60591-5` claims, explicit final
+  status, attesters and document links; native Coding.system uses the canonical
+  LOINC URI. Final document status does not assert a verified signature.
+- Pass coverage globs portably so Windows measures actual emitted files rather
+  than reporting an empty file set.
+
 - Own version-neutral FHIR API claim-key syntax normalization in the shared
   claim helpers, preserving namespace rejection and leaving membership checks
   and authorization to consumers.

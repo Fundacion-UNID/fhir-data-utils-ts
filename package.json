@@ -7,6 +7,14 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./clinical-resource-view": {
+      "types": "./dist/clinical-resource-view.d.ts",
+      "default": "./dist/clinical-resource-view.js"
+    },
+    "./clinical-document-bundle": {
+      "types": "./dist/builders/clinical-document-bundle.d.ts",
+      "default": "./dist/builders/clinical-document-bundle.js"
+    },
     "./hl7-personal-relationships": {
       "types": "./dist/hl7-personal-relationships.d.ts",
       "default": "./dist/hl7-personal-relationships.js"
@@ -168,7 +176,7 @@
     "build": "npm run clean && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "npm run build && node --test tests/*.test.mjs",
-    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='dist/converters/*.js' --test-coverage-include='dist/builders/*.js' --test-coverage-include='dist/fhir-*.js' --test-coverage-exclude='dist/**/*.data.js' --test-coverage-lines=95 --test-coverage-functions=80 --test-coverage-branches=40 tests/*.test.mjs",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=dist/converters/*.js --test-coverage-include=dist/builders/*.js --test-coverage-include=dist/fhir-*.js --test-coverage-exclude=dist/**/*.data.js --test-coverage-lines=95 --test-coverage-functions=80 --test-coverage-branches=40 tests/*.test.mjs",
     "check": "npm run typecheck && npm test && npm run test:coverage",
     "prepack": "npm run check"
   },
