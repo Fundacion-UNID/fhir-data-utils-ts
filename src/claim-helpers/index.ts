@@ -1,4 +1,5 @@
 export * from './claim-list-helpers.js'
+export * from './fhir-api-claim-key.js'
 export * from './claims-helpers-allergy-intolerance.js'
 export * from './claims-helpers-appointment-response.js'
 export * from './claims-helpers-appointment.js'

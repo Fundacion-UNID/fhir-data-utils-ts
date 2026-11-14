@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Own version-neutral FHIR API claim-key syntax normalization in the shared
+  claim helpers, preserving namespace rejection and leaving membership checks
+  and authorization to consumers.
 - Expose the native Communication, attachment and metadata exchange projections
   through the root and existing FHIR types subpath. Keep consumer metadata
   extensions explicit and transport, storage and authorization policy downstream.

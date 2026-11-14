@@ -60,6 +60,10 @@ Typed native Communication exchange values use `FhirCommunicationResource`,
 `FhirAttachment` and `FhirMeta` from the root or `fhir-types` subpath. See the
 [native projection scope and validation limits](docs/NATIVE_COMMUNICATION_PROJECTION.md).
 
+`normalizeFhirApiClaimKey` in the root and `claim-helpers` exports normalizes
+short or qualified version-neutral claim syntax. It does not check catalogue
+membership, search support or authorization.
+
 Reservable equipment remains a `Device` actor of its service-specific
 `Schedule`. Technical calibration is recorded as a `Procedure` focused on that
 Device plus the current `DeviceMetric.calibration` state and an optional

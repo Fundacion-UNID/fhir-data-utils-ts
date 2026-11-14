@@ -18,6 +18,8 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
    authorization and product policy in their owning services or sector packages.
 4. Define every flat key once in its owning named catalog. Import that symbol in
    converters, builders, tests and examples; never repeat a claim-path literal.
+   Use `normalizeFhirApiClaimKey` for qualified/short claim syntax at import
+   boundaries; its syntax acceptance does not replace resource-catalog checks.
 5. For SHC and DGC archaeology, prefer the latest governed standards-based
    implementation evidence. Do not copy an earlier helper when a later
    governed contract exists.
