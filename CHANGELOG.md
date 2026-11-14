@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0
+
 - Expose the clinical local-text/international-display reader so summaries can
   retain both supplied labels without a legacy utility dependency. Preserve
   manual text, canonical claim precedence and duplicate-label suppression;
