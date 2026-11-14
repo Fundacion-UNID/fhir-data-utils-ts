@@ -35,6 +35,13 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
   validator and must not acquire transport or authorization behavior.
 - Put multi-resource authoring under `src/builders/`. A root historical module
   may remain only as a deprecated re-export shim so implementation is unique.
+- Reuse `clinical-resource-view` for claim fields, cards, Composition sections
+  and separate local/international labels. A display never confirms coding or
+  authorizes access. Reuse `buildClinicalDocumentBundle` from
+  `clinical-document-bundle` for Composition-first document assembly; canonical
+  persisted data stays in flat claims and native output is an exchange
+  projection. Caller-supplied final status and attester references are not
+  verified signatures or proof of authority.
 - Preserve correlations by creating one claims-first row per member, party or
   component when parallel arrays would lose identity.
 - Reconstruct native arrays such as `Observation.component[]` only during FHIR
