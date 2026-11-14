@@ -1,5 +1,12 @@
 # Independent FHIR contracts
 
+`normalizeFhirApiClaimKey` accepts short claim names or their qualified
+`org.hl7.fhir.api` spelling and rejects version-specific namespaces. It validates
+syntax only; resource/parameter catalogue membership and permission checks stay
+with callers. Original compatibility source:
+<https://github.com/Global-DataCare/gdc-common-utils-ts>, specifically the
+[reviewed claim-key helper](https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/utils/fhir-api-claim-helpers.ts).
+
 `FhirCommunicationResource` and its `FhirCommunication` spelling describe a
 native exchange subset using package-owned references and annotations.
 `FhirAttachment`, `FhirCommunicationPayload` and `FhirMeta` are also exported
