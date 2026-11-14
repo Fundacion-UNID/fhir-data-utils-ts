@@ -27,6 +27,10 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
 - Put claim names and specs under `src/claims/`.
 - Put native FHIR R4/R5 projection at `src/converters/`; persistence remains
   flat claims and native FHIR exists only at an explicit adapter boundary.
+- Keep native Communication exchange declarations in `fhir-types`; reuse the
+  package's standard primitives and keep consumer metadata extensions unknown
+  unless explicitly specialized. A partial projection is not a complete FHIR
+  validator and must not acquire transport or authorization behavior.
 - Put multi-resource authoring under `src/builders/`. A root historical module
   may remain only as a deprecated re-export shim so implementation is unique.
 - Preserve correlations by creating one claims-first row per member, party or

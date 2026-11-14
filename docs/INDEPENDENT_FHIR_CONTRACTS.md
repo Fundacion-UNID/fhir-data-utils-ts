@@ -1,5 +1,13 @@
 # Independent FHIR contracts
 
+`FhirCommunicationResource` and its `FhirCommunication` spelling describe a
+native exchange subset using package-owned references and annotations.
+`FhirAttachment`, `FhirCommunicationPayload` and `FhirMeta` are also exported
+through the root and `fhir-types` subpath. Metadata extensions stay unknown
+unless a consumer supplies its explicit generic contract. These declarations
+do not perform full resource/profile validation or transport delivery. See
+[native Communication projection](NATIVE_COMMUNICATION_PROJECTION.md).
+
 `HL7_PERSONAL_RELATIONSHIP_ROLES` contains active, selectable concepts in the
 [personal relationship ValueSet](https://terminology.hl7.org/ValueSet-v3-PersonalRelationshipRoleType.html),
 using its underlying RoleCode coding system. The snapshot is derived from

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Expose the native Communication, attachment and metadata exchange projections
+  through the root and existing FHIR types subpath. Keep consumer metadata
+  extensions explicit and transport, storage and authorization policy downstream.
+
 - Add active personal relationship and selected representative descriptors from
   HL7 Terminology RoleCode 4.0.0. Use the actual RoleCode system, exclude retired
   spelling aliases, and keep role selection and legal authority downstream.

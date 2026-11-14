@@ -56,6 +56,10 @@ strict parsing and projection tools; mutable editors, transport and
 cross-sector policy belong downstream. See
 [Communication Bundle contract](docs/COMMUNICATION_BUNDLE_CONTRACT.md).
 
+Typed native Communication exchange values use `FhirCommunicationResource`,
+`FhirAttachment` and `FhirMeta` from the root or `fhir-types` subpath. See the
+[native projection scope and validation limits](docs/NATIVE_COMMUNICATION_PROJECTION.md).
+
 Reservable equipment remains a `Device` actor of its service-specific
 `Schedule`. Technical calibration is recorded as a `Procedure` focused on that
 Device plus the current `DeviceMetric.calibration` state and an optional
