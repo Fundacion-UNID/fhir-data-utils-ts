@@ -7,6 +7,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./hl7-personal-relationships": {
+      "types": "./dist/hl7-personal-relationships.d.ts",
+      "default": "./dist/hl7-personal-relationships.js"
+    },
     "./operation-outcome": {
       "types": "./dist/operation-outcome.d.ts",
       "default": "./dist/operation-outcome.js"

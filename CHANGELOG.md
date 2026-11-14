@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add active personal relationship and selected representative descriptors from
+  HL7 Terminology RoleCode 4.0.0. Use the actual RoleCode system, exclude retired
+  spelling aliases, and keep role selection and legal authority downstream.
+
 - Own the published R5 OperationOutcome issue and severity vocabularies,
   exact membership guards and minimal native exchange types. Keep HTTP status
   policy and operational error classes outside this FHIR package.

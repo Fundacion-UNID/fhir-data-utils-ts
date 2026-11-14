@@ -1,5 +1,14 @@
 # Independent FHIR contracts
 
+`HL7_PERSONAL_RELATIONSHIP_ROLES` contains active, selectable concepts in the
+[personal relationship ValueSet](https://terminology.hl7.org/ValueSet-v3-PersonalRelationshipRoleType.html),
+using its underlying RoleCode coding system. The snapshot is derived from
+[HL7 Terminology RoleCode 4.0.0](https://terminology.hl7.org/CodeSystem-v3-RoleCode.json)
+under [CC0](https://terminology.hl7.org/license.html). Retired spelling aliases
+are excluded. `HL7_V3_ROLE_CODE_LEGAL_REPRESENTATIVE` provides selected standard
+representative descriptors. Neither catalog sets a selected role, UI default,
+employment status, legal appointment or permission.
+
 `IssueType`, `IssueSeverity` and their coding-system URLs expose the published
 [R5 issue types](https://hl7.org/fhir/R5/valueset-issue-type.html) and
 [R5 severities](https://hl7.org/fhir/R5/valueset-issue-severity.html).
