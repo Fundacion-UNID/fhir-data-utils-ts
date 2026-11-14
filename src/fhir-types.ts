@@ -70,3 +70,59 @@ export type FhirBundle<TResource extends FhirResource = FhirResource> = FhirReso
   total?: number
   entry?: readonly FhirBundleEntry<TResource>[]
 }>
+
+/** Native attachment exchange subset; data is base64 and hash is the native base64 digest.
+ * https://hl7.org/fhir/R4/datatypes.html#Attachment
+ */
+export type FhirAttachment = Readonly<{
+  contentType?: string
+  language?: string
+  data?: string
+  url?: string
+  title?: string
+  creation?: string
+  hash?: string
+}>
+
+/** Native metadata projection. Additional consumer fields remain unknown here;
+ * this package does not assign persistence or authorization meaning to them.
+ */
+export type FhirMeta = Readonly<{
+  versionId?: string
+  lastUpdated?: string
+  source?: string
+  profile?: readonly string[]
+  security?: readonly FhirCoding[]
+  tag?: readonly FhirCoding[]
+  [key: string]: unknown
+}>
+
+/** Partial native Communication payload projection, not a content-choice validator. */
+export type FhirCommunicationPayload = Readonly<{
+  contentString?: string
+  contentAttachment?: FhirAttachment
+  contentReference?: FhirReference
+}>
+
+/** Native Communication exchange projection used at explicit adapter boundaries.
+ * Optional fields allow partial projections; this is not full profile validation.
+ * Consumers may specialize metadata explicitly without defining a second stored
+ * clinical model. Routing, delivery, identity and authorization remain downstream.
+ * https://hl7.org/fhir/R4/communication.html
+ */
+export interface FhirCommunicationResource<TMeta extends FhirMeta = FhirMeta> extends FhirResource {
+  resourceType: 'Communication'
+  meta?: TMeta
+  status?: string
+  category?: readonly FhirCodeableConcept[]
+  subject?: FhirReference
+  recipient?: readonly FhirReference[]
+  sender?: FhirReference
+  sent?: string
+  payload?: readonly FhirCommunicationPayload[]
+  partOf?: readonly FhirReference[]
+  note?: readonly FhirAnnotation[]
+}
+
+/** Compatibility spelling for the neutral native Communication projection. */
+export type FhirCommunication<TMeta extends FhirMeta = FhirMeta> = FhirCommunicationResource<TMeta>
