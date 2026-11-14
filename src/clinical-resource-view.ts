@@ -16,6 +16,7 @@ export type ClinicalResourceCardView=Readonly<{
   doseQuantityValue?:number;doseQuantityUnit?:string;referenceRangeText?:string;description?:string
 }>
 export type ClinicalSectionView=Readonly<{code?:string;title:string;emptyReason?:string;resources:ClinicalResourceCardView[];unresolvedReferences:string[]}>
+export type LocalTextAndIntDisplay=Readonly<{localText?:string;internationalDisplay?:string;combined?:string}>
 
 const record=(value:unknown):Record<string,unknown>=>value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{}
 const list=(value:unknown):unknown[]=>Array.isArray(value)?value:[]
@@ -90,6 +91,18 @@ function titleFor(resource:ClinicalResourceLike,claims:Record<string,unknown>,op
   const device=record(resource.device)
   const fallback=first(claims[`${type}.title`],claims[`${type}.description`],claims[`${type}.summary`],type==='Device'?claims[Claims.DeviceClaim.DeviceName]:undefined,resource.title,resource.description,resource.summary,typeof resource.name==='string'?resource.name:undefined,...names,device.display,record(resource.medicationReference).display,record(list(resource.content)[0]).attachment&&record(record(list(resource.content)[0]).attachment).title)
   return fallback||type
+}
+
+/** Preserves supplied local and international labels; it neither translates nor confirms a coding. */
+export function getLocalTextAndIntDisplay(resource:ClinicalResourceLike):LocalTextAndIntDisplay{
+  const fields=toClinicalResourceClaimFieldViews(resource.meta?.claims??{})
+  const claims=Object.fromEntries(fields.map(field=>[field.claim,field.value]))
+  const type=resource.resourceType??'Unknown',concept=record(primaryConcept(resource))
+  const readSuffix=(...suffixes:string[])=>first(...suffixes.flatMap(suffix=>fields.filter(field=>field.parameter===suffix).map(field=>field.value)))
+  const localText=first(concept.text,readSuffix('code-text','code-text-local','codetextlocal','medication-text','vaccine-code-text','value-concept-text'))||titleFor({...resource,resourceType:type},claims,{})
+  const internationalDisplay=first(...list(concept.coding).map(value=>record(value).display),readSuffix('code-display','codedisplay','vaccine-code-display','value-concept-display'))
+  const combined=localText&&internationalDisplay&&localText!==internationalDisplay?`${localText} (${internationalDisplay})`:localText||internationalDisplay
+  return {...(localText?{localText}:{}),...(internationalDisplay?{internationalDisplay}:{}),...(combined?{combined}:{})}
 }
 
 /** Claims-first resource projection shared by every clinical UI; it has no authorization or storage behavior. */
