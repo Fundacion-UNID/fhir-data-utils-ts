@@ -10,6 +10,12 @@
   fields, reject unrepresentable choices/order, and preserve Narrative/note
   separation. R5 coded payloads require an explicit R5 adapter. Existing native
   partial types and all prior claim wire values remain unchanged.
+- Add native R5 event-notification assembly with caller-owned full URLs and
+  timestamps, exact integer64 counters and focus binding. Resolve advertised
+  full-resource URLs while retaining relative-reference parsing.
+- Add the supported literal-path subscription event matcher with R5 topic and
+  subscription field names, explicit comparator declarations and rejection of
+  unsupported filters. Keep transport, persistence and authorization downstream.
 
 ## 0.7.0
 

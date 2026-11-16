@@ -199,6 +199,26 @@ claim strings, terminology identifiers, codes or UUIDs.
 
 ## R5 asynchronous notifications
 
+`fhir-data-utils-ts/subscription-r5` also exports
+`buildSubscriptionNotificationR5(...)` and `matchesSubscriptionEventR5(...)`.
+The builder requires a caller-owned timestamp and an absolute `fullUrl` for
+every entry, preserving integer64 event/count values as strings. It can include
+one full-resource focus; the parser resolves that entry by its advertised URL
+or an existing relative resource reference. It does not create identities or
+send notifications.
+
+The matcher supports the declared literal-path `eq`/`ne` profile, exact
+references and the `patient`/`subject` reference aliases. Unknown filters,
+modifiers and comparators do not match. It uses the standard topic field
+`canFilterBy.resource` and subscription field `filterBy.resourceType`; it does
+not implement all FHIR search operators or grant access.
+
+The element names and notification entry requirements follow the permanent
+[SubscriptionTopic definitions](https://hl7.org/fhir/R5/subscriptiontopic-definitions.html),
+[Subscription definitions](https://hl7.org/fhir/R5/subscription-definitions.html),
+[SubscriptionStatus definitions](https://hl7.org/fhir/R5/subscriptionstatus-definitions.html)
+and [Bundle invariants](https://hl7.org/fhir/R5/bundle-definitions.html).
+
 `fhir-data-utils-ts/subscription-r5` separates three boundaries:
 
 - `SubscriptionTopic` and `Subscription` are native R5 configuration resources;

@@ -171,3 +171,123 @@ test('subscription-notification parser rejects non-notification and unresolved f
     /subscription_notification_focus_missing/,
   )
 })
+
+test('event notification builder preserves counters and resolves its full-resource focus by fullUrl', () => {
+  const communication = fhir.buildTerminalJobCommunication({
+    id: EXAMPLE.communicationId, threadId: EXAMPLE.threadId, jobId: EXAMPLE.jobId,
+    recipient: EXAMPLE.recipient, sender: EXAMPLE.sender,
+    researchStudyReference: EXAMPLE.study, sent: EXAMPLE.sent, jobStatus: EXAMPLE.jobStatus,
+  })
+  const focusUrl = new URL(`/Communication/${EXAMPLE.communicationId}`, EXAMPLE.topicUrl).href
+  const statusUrl = new URL(`/SubscriptionStatus/${EXAMPLE.subscriptionId}`, EXAMPLE.topicUrl).href
+  const bundle = fhir.buildSubscriptionNotificationR5({
+    subscriptionReference: `Subscription/${EXAMPLE.subscriptionId}`, topic: EXAMPLE.topicUrl,
+    eventNumber: 1, eventsSinceSubscriptionStart: 1, timestamp: EXAMPLE.sent,
+    statusFullUrl: statusUrl, focusReference: focusUrl, focusResource: communication,
+    focusFullUrl: focusUrl, additionalContextReferences: [EXAMPLE.study],
+  })
+  assert.equal(bundle.type, fhir.SubscriptionR5BundleType.Notification)
+  assert.equal(bundle.timestamp, EXAMPLE.sent)
+  assert.ok(bundle.entry.every(entry => new URL(entry.fullUrl).href === entry.fullUrl))
+  const status = bundle.entry[0].resource
+  assert.equal(status.status, fhir.SubscriptionR5Status.Active)
+  assert.equal(status.eventsSinceSubscriptionStart, '1')
+  assert.deepEqual(status.notificationEvent, [{
+    eventNumber: '1', timestamp: EXAMPLE.sent, focus: { reference: focusUrl },
+    additionalContext: [{ reference: EXAMPLE.study }],
+  }])
+  const parsed = fhir.parseSubscriptionNotificationR5(bundle)
+  assert.equal(parsed.subscriptionReference, `Subscription/${EXAMPLE.subscriptionId}`)
+  assert.equal(parsed.events[0].eventNumber, '1')
+  assert.deepEqual(parsed.events[0].focusResource, communication)
+})
+
+test('event matching accepts the canonical R5 resource URI and requires every applicable filter', () => {
+  const resource = { resourceType: fhir.ResourceTypesFhirR5.Communication, id: EXAMPLE.communicationId,
+    status: fhir.CommunicationStatus.Completed, subject: { reference: EXAMPLE.study } }
+  const topic = { status: fhir.SubscriptionTopicR5Status.Active, url: EXAMPLE.topicUrl,
+    resourceTrigger: [{ resource: 'http://hl7.org/fhir/StructureDefinition/Communication' }],
+    canFilterBy: [
+      { resource: 'http://hl7.org/fhir/StructureDefinition/Communication', filterParameter: 'status', comparator: ['eq', 'ne'] },
+      { resource: fhir.ResourceTypesFhirR5.Communication, filterParameter: 'subject', comparator: ['eq', 'ne'] },
+    ] }
+  const subscription = { status: fhir.SubscriptionR5Status.Active, topic: EXAMPLE.topicUrl,
+    filterBy: [
+      { resourceType: fhir.ResourceTypesFhirR5.Communication, filterParameter: 'status', comparator: 'eq', value: resource.status },
+      { filterParameter: 'subject', value: EXAMPLE.study },
+    ] }
+  const snapshot = structuredClone({ resource, topic, subscription })
+  assert.equal(fhir.matchesSubscriptionEventR5(subscription, topic, resource), true)
+  assert.equal(fhir.matchesSubscriptionEventR5({ ...subscription, filterBy: [
+    subscription.filterBy[0], { filterParameter: 'subject', value: `${EXAMPLE.study}-other` },
+  ] }, topic, resource), false)
+  assert.deepEqual({ resource, topic, subscription }, snapshot)
+})
+
+test('event matching preserves exact references and rejects unsupported filters and stale subscriptions', () => {
+  const resource = { resourceType: fhir.ResourceTypesFhirR5.Communication, id: EXAMPLE.communicationId,
+    status: fhir.CommunicationStatus.Completed, subject: { reference: EXAMPLE.study },
+    category: [{ coding: [{ code: fhir.CommunicationCategoryCode.Notification }] }] }
+  const topic = { status: fhir.SubscriptionTopicR5Status.Active, url: EXAMPLE.topicUrl,
+    resourceTrigger: [{ resource: resource.resourceType }],
+    canFilterBy: [
+      { resource: resource.resourceType, filterParameter: 'status', comparator: ['eq', 'ne'] },
+      { resource: resource.resourceType, filterParameter: 'patient', comparator: ['eq', 'ne'] },
+      { resource: resource.resourceType, filterParameter: 'category.coding.code', comparator: ['eq'] },
+    ] }
+  const base = { status: fhir.SubscriptionR5Status.Active, topic: topic.url }
+  const withFilter = filter => ({ ...base, filterBy: [filter] })
+  assert.equal(fhir.matchesSubscriptionEventR5(withFilter({ filterParameter: 'patient', value: EXAMPLE.study }), topic, resource), true)
+  assert.equal(fhir.matchesSubscriptionEventR5(withFilter({ filterParameter: 'patient', value: EXAMPLE.study.slice(0, -1) }), topic, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5(withFilter({ filterParameter: 'status', comparator: 'ne', value: 'entered-in-error' }), topic, resource), true)
+  assert.equal(fhir.matchesSubscriptionEventR5(withFilter({ filterParameter: 'category.coding.code', comparator: 'eq', value: fhir.CommunicationCategoryCode.Notification }), topic, resource), true)
+  for (const filter of [
+    { filterParameter: 'missing', value: resource.status },
+    { filterParameter: 'status', comparator: 'gt', value: resource.status },
+    { filterParameter: 'status', comparator: 'eq', modifier: 'exact', value: resource.status },
+    { filterParameter: 'status', modifier: 'exact', value: resource.status },
+  ]) assert.equal(fhir.matchesSubscriptionEventR5(withFilter(filter), topic, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5({ ...base, status: fhir.SubscriptionR5Status.Off }, topic, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5(base, { ...topic, status: fhir.SubscriptionTopicR5Status.Retired }, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5({ ...base, topic: `${topic.url}-other` }, topic, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5(withFilter({ filterParameter: 'status', comparator: 'eq', value: resource.status }), {
+    ...topic, canFilterBy: [{ resourceType: resource.resourceType, filterParameter: 'status', comparator: ['eq'] }],
+  }, resource), false)
+  assert.equal(fhir.matchesSubscriptionEventR5(base, { ...topic, resourceTrigger: [null] }, resource), false)
+})
+
+test('notification builder rejects ambiguous references, invalid identifiers and counters without changing its input', () => {
+  const base = { subscriptionReference: `Subscription/${EXAMPLE.subscriptionId}`, topic: EXAMPLE.topicUrl,
+    eventNumber: 1, eventsSinceSubscriptionStart: 1, timestamp: EXAMPLE.sent,
+    statusFullUrl: new URL(`/SubscriptionStatus/${EXAMPLE.subscriptionId}`, EXAMPLE.topicUrl).href,
+    focusReference: `${fhir.ResourceTypesFhirR5.Communication}/${EXAMPLE.communicationId}` }
+  const snapshot = structuredClone(base)
+  for (const override of [
+    { statusFullUrl: '' }, { statusFullUrl: 'urn:uuid:subscription-status' },
+    { statusFullUrl: 'URN:UUID:subscription-status' }, { statusFullUrl: `${base.statusFullUrl}/_history/1` },
+    { eventNumber: -1 }, { eventNumber: Number.MAX_SAFE_INTEGER + 1 },
+    { eventsSinceSubscriptionStart: '9223372036854775808' }, { timestamp: 'not-an-instant' },
+    { focusFullUrl: EXAMPLE.topicUrl },
+  ]) assert.throws(() => fhir.buildSubscriptionNotificationR5({ ...base, ...override }))
+  const large = fhir.buildSubscriptionNotificationR5({ ...base, eventsSinceSubscriptionStart: '9223372036854775807' })
+  assert.equal(large.entry[0].resource.eventsSinceSubscriptionStart, '9223372036854775807')
+  assert.deepEqual(base, snapshot)
+})
+
+test('full-resource notifications reject ambiguous focus identities and do not share mutable source data', () => {
+  const resource = { resourceType: fhir.ResourceTypesFhirR5.Communication, id: EXAMPLE.communicationId,
+    meta: { claims: { [fhir.CommunicationClaim.Identifier]: EXAMPLE.threadId } } }
+  const statusUrl = new URL(`/SubscriptionStatus/${EXAMPLE.subscriptionId}`, EXAMPLE.topicUrl).href
+  const focusUrl = new URL(`/Communication/${EXAMPLE.communicationId}`, EXAMPLE.topicUrl).href
+  const input = { subscriptionReference: `Subscription/${EXAMPLE.subscriptionId}`, timestamp: EXAMPLE.sent,
+    eventNumber: 1, eventsSinceSubscriptionStart: 1, statusFullUrl: statusUrl,
+    focusReference: focusUrl, focusResource: resource, focusFullUrl: focusUrl }
+  assert.throws(() => fhir.buildSubscriptionNotificationR5({ ...input, focusFullUrl: statusUrl }), /focus_binding/)
+  assert.throws(() => fhir.buildSubscriptionNotificationR5({ ...input, focusReference: `${focusUrl}-other` }), /focus_binding/)
+  const bundle = fhir.buildSubscriptionNotificationR5(input)
+  const duplicated = structuredClone(bundle)
+  duplicated.entry.push(structuredClone(duplicated.entry[1]))
+  assert.throws(() => fhir.parseSubscriptionNotificationR5(duplicated), /focus_missing/)
+  bundle.entry[1].resource.meta.claims[fhir.CommunicationClaim.Identifier] = `${EXAMPLE.threadId}-changed`
+  assert.equal(resource.meta.claims[fhir.CommunicationClaim.Identifier], EXAMPLE.threadId)
+})

@@ -2,6 +2,7 @@ import { CommunicationClaim } from './claims/communication-claims.js'
 import { FhirCodeSystems } from './constants/fhir-code-systems.js'
 import { ResourceTypesFhirR5 } from './constants/fhir-resource-types.js'
 import type { FhirResource } from './fhir-types.js'
+import { fhirInstantToEpochSeconds } from './fhir-instant.js'
 
 /** FHIR R5 version implemented by this native subscription boundary. */
 export const SubscriptionR5Version = '5.0.0' as const
@@ -228,6 +229,100 @@ export type ParsedSubscriptionNotificationR5 = Readonly<{
   events: readonly ParsedSubscriptionNotificationEventR5[]
 }>
 
+export type BuildSubscriptionNotificationR5Input = Readonly<{
+  subscriptionReference: string
+  topic?: string
+  eventNumber: number | string
+  eventsSinceSubscriptionStart: number | string
+  timestamp: string
+  /** Caller-owned absolute resource identity; notification bundles require fullUrl on every entry. */
+  statusFullUrl: string
+  focusReference: string
+  additionalContextReferences?: readonly string[]
+  focusResource?: FhirResource
+  focusFullUrl?: string
+}>
+
+/** Builds the supported R5 event notification; delivery, clocks and resource identity creation belong to the caller. */
+export function buildSubscriptionNotificationR5(input: BuildSubscriptionNotificationR5Input) {
+  const timestamp = required(input.timestamp, 'subscription_notification_timestamp_required')
+  fhirInstantToEpochSeconds(timestamp)
+  const focusReference = required(input.focusReference, 'subscription_notification_focus_required')
+  const statusFullUrl = notificationFullUrl(input.statusFullUrl)
+  const entries: Array<{ fullUrl: string; resource: FhirResource }> = [{
+    fullUrl: statusFullUrl,
+    resource: {
+      resourceType: ResourceTypesFhirR5.SubscriptionStatus,
+      status: SubscriptionR5Status.Active,
+      type: SubscriptionR5NotificationType.EventNotification,
+      subscription: { reference: required(input.subscriptionReference, 'subscription_notification_subscription_required') },
+      ...(input.topic ? { topic: required(input.topic, 'subscription_notification_topic_required') } : {}),
+      eventsSinceSubscriptionStart: notificationCounter(input.eventsSinceSubscriptionStart),
+      notificationEvent: [{
+        eventNumber: notificationCounter(input.eventNumber), timestamp,
+        focus: { reference: focusReference },
+        ...(input.additionalContextReferences?.length ? {
+          additionalContext: input.additionalContextReferences.map(reference => ({ reference: required(reference, 'subscription_notification_context_required') })),
+        } : {}),
+      }],
+    },
+  }]
+  if (input.focusResource) {
+    const fullUrl = notificationFullUrl(input.focusFullUrl)
+    if (fullUrl === statusFullUrl || !input.focusResource.resourceType
+      || (focusReference !== fullUrl && focusReference !== `${input.focusResource.resourceType}/${input.focusResource.id ?? ''}`)) {
+      throw new TypeError('subscription_notification_focus_binding_invalid')
+    }
+    entries.push({ fullUrl, resource: structuredClone(input.focusResource) })
+  } else if (input.focusFullUrl !== undefined) throw new TypeError('subscription_notification_focus_resource_required')
+  return {
+    resourceType: ResourceTypesFhirR5.Bundle,
+    type: SubscriptionR5BundleType.Notification,
+    timestamp, entry: entries,
+  }
+}
+
+export type SubscriptionEventFilterR5 = SubscriptionR5Filter
+export type SubscriptionEventSelectionR5 = Readonly<{
+  status: SubscriptionR5['status']
+  topic: string
+  filterBy?: readonly SubscriptionEventFilterR5[]
+}>
+export type SubscriptionEventTopicR5 = Readonly<{
+  status: SubscriptionTopicR5['status']
+  url: string
+  resourceTrigger: SubscriptionTopicR5['resourceTrigger']
+  canFilterBy?: readonly Readonly<{
+    resource?: string
+    filterParameter: string
+    comparator?: readonly ('eq' | 'ne')[]
+  }>[]
+}>
+
+/** Pure literal-path eq/ne event selection, not full FHIR search or authorization. Unsupported filters do not match. */
+export function matchesSubscriptionEventR5(subscription: SubscriptionEventSelectionR5, topic: SubscriptionEventTopicR5, resource: FhirResource): boolean {
+  if (subscription?.status !== SubscriptionR5Status.Active || topic?.status !== SubscriptionTopicR5Status.Active
+    || subscription.topic !== topic.url || !resource?.resourceType
+    || !Array.isArray(topic.resourceTrigger) || !topic.resourceTrigger.some(trigger => resourceDefinitionMatches(trigger?.resource, resource.resourceType))) return false
+  if (subscription.filterBy !== undefined && !Array.isArray(subscription.filterBy)) return false
+  if (topic.canFilterBy !== undefined && !Array.isArray(topic.canFilterBy)) return false
+  return (subscription.filterBy ?? []).every(filter => {
+    if (!filter || typeof filter.filterParameter !== 'string' || !filter.filterParameter || typeof filter.value !== 'string'
+      || filter.modifier !== undefined || (filter.comparator !== undefined && !['eq', 'ne'].includes(filter.comparator))) return false
+    if (filter.resourceType && !resourceDefinitionMatches(filter.resourceType, resource.resourceType)) return true
+    const definition = (topic.canFilterBy ?? []).find(candidate => candidate?.filterParameter === filter.filterParameter
+      && (!candidate.resource || resourceDefinitionMatches(candidate.resource, resource.resourceType)))
+    // Legacy non-standard topic fields must be projected at the consumer's import boundary.
+    if (!definition || Object.hasOwn(definition, 'resourceType')
+      || (definition.comparator !== undefined && !Array.isArray(definition.comparator))) return false
+    const comparator = filter.comparator ?? 'eq'
+    if (filter.comparator && !definition.comparator?.includes(filter.comparator)) return false
+    if (definition.comparator?.length && !definition.comparator.includes(comparator)) return false
+    const match = subscriptionFilterValues(resource, filter.filterParameter).includes(filter.value)
+    return comparator === 'ne' ? !match : match
+  })
+}
+
 /** Validates a standard R5 notification Bundle and resolves every advertised full-resource focus. */
 export function parseSubscriptionNotificationR5(input: unknown): ParsedSubscriptionNotificationR5 {
   const bundle = record(input)
@@ -236,7 +331,8 @@ export function parseSubscriptionNotificationR5(input: unknown): ParsedSubscript
   }
   const entries = Array.isArray(bundle.entry) ? bundle.entry : []
   if (entries.length < 1 || entries.length > 101) throw new TypeError('subscription_notification_entries_invalid')
-  const resources = entries.map(entry => record(record(entry).resource)).filter(resource => resource.resourceType)
+  const resourceEntries = entries.map(entry => ({ fullUrl: record(entry).fullUrl, resource: record(record(entry).resource) }))
+  const resources = resourceEntries.map(entry => entry.resource).filter(resource => resource.resourceType)
   const status = resources.find(resource => resource.resourceType === ResourceTypesFhirR5.SubscriptionStatus)
   if (!status) throw new TypeError('subscription_notification_status_missing')
   const notificationType = required(String(status.type ?? ''), 'subscription_notification_type_missing')
@@ -251,8 +347,9 @@ export function parseSubscriptionNotificationR5(input: unknown): ParsedSubscript
   const events = rawEvents.map(rawEvent => {
     const event = record(rawEvent)
     const focusReference = required(String(record(event.focus).reference ?? ''), 'subscription_notification_focus_missing')
-    const focusResource = resources.find(resource => `${resource.resourceType}/${resource.id ?? ''}` === focusReference)
-    if (!focusResource) throw new TypeError('subscription_notification_focus_missing')
+    const matches = resourceEntries.filter(({ fullUrl, resource }) => fullUrl === focusReference || `${resource.resourceType}/${resource.id ?? ''}` === focusReference)
+    if (matches.length !== 1) throw new TypeError('subscription_notification_focus_missing')
+    const focusResource = matches[0].resource
     return Object.freeze({
       eventNumber: required(String(event.eventNumber ?? ''), 'subscription_notification_event_number_missing'),
       ...(event.timestamp ? { timestamp: String(event.timestamp) } : {}),
@@ -284,4 +381,44 @@ function required(value: string, error: string): string {
 
 function record(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {}
+}
+
+function notificationFullUrl(value: string | undefined): string {
+  const text = required(value ?? '', 'subscription_notification_full_url_required')
+  let url: URL
+  try { url = new URL(text) } catch { throw new TypeError('subscription_notification_full_url_invalid') }
+  if (!['http:', 'https:', 'urn:'].includes(url.protocol) || url.username || url.password || url.hash || /\/_history\//u.test(url.pathname)
+    || (text.toLowerCase().startsWith('urn:uuid:') && !/^urn:uuid:[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/iu.test(text))) {
+    throw new TypeError('subscription_notification_full_url_invalid')
+  }
+  return url.href
+}
+
+function notificationCounter(value: number | string): string {
+  if ((typeof value === 'number' && (!Number.isSafeInteger(value) || value < 0))
+    || !/^\d+$/u.test(String(value)) || BigInt(value) > 9223372036854775807n) throw new TypeError('subscription_notification_counter_invalid')
+  return BigInt(value).toString()
+}
+
+function subscriptionFilterValues(resource: FhirResource, path: string): string[] {
+  const aliases: Record<string, readonly string[]> = {
+    patient: ['patient.reference', 'subject.reference'], subject: ['subject.reference', 'patient.reference'],
+  }
+  const values: string[] = []
+  for (const candidate of aliases[path.toLowerCase()] ?? [path]) {
+    let current: unknown[] = [resource]
+    for (const part of candidate.split('.')) {
+      current = current.flatMap(value => {
+        if (!value || typeof value !== 'object' || !Object.hasOwn(value, part)) return []
+        const next = (value as Record<string, unknown>)[part]
+        return Array.isArray(next) ? next : next === undefined ? [] : [next]
+      })
+    }
+    values.push(...current.filter(value => typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean').map(String))
+  }
+  return values
+}
+
+function resourceDefinitionMatches(definition: unknown, resourceType: string): boolean {
+  return typeof definition === 'string' && (definition === resourceType || definition === `http://hl7.org/fhir/StructureDefinition/${resourceType}`)
 }
