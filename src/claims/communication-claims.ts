@@ -35,8 +35,10 @@ export const CommunicationClaim = {
   Topic: 'Communication.topic',
   /** Resource references that provide the Communication context; CSV allowed. */
   About: 'Communication.about',
-  /** Narrative text (short summary or body). */
+  /** Resource Narrative summary; distinct from payload content and sender notes. */
   Text: 'Communication.text',
+  /** Literal message-body text; the native R4 choice is payload.contentString. */
+  ContentString: 'Communication.content-string',
   /** Related resource references; CSV allowed. */
   ContentReference: 'Communication.content-reference',
   /** Content code (`system|code`) when payload is coded. */

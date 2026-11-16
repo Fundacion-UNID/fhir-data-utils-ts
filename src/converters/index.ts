@@ -33,3 +33,5 @@ export * from './convert-service-request.js'
 export * from './convert-schedule-slot.js'
 export * from './materialize-claims-first-resource.js'
 export * from './convert-us-core-patient-demographics.js'
+
+export * from './convert-communication-payload.js'
