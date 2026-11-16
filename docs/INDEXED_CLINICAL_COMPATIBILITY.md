@@ -9,13 +9,25 @@ the `converters` subpath:
 | `indexedR4ResourceToClaims` | `indexed-r4-semantic` | MedicationStatement, Observation, AllergyIntolerance, Condition, DeviceUseStatement, Flag, Procedure, Immunization, DocumentReference, RelatedPerson, DiagnosticReport, CarePlan, Encounter, Consent |
 | `indexedR4ClaimsToResource` | `indexed-r4-semantic` | AllergyIntolerance, CarePlan, Composition, Condition, Consent, DeviceUseStatement, DiagnosticReport, DocumentReference, Flag, Immunization, MedicationStatement, Observation, Procedure |
 | `indexedStructuralResourceToClaims` / `indexedStructuralClaimsToResource` | `indexed-structural-compat-v1` | ImagingStudy, ImmunizationRecommendation, Medication, EncounterHistory, AdverseEvent |
-| `documentSupportResourceToClaims` | `document-support-r4-v1` | Composition, Organization, PractitionerRole use their semantic pairs; Patient and Practitioner use structural projection |
+| `documentSupportResourceToClaims` | `document-support-r4-v1` | Composition, Organization, PractitionerRole, Device, Location, Coverage, Appointment and AppointmentResponse use their semantic pairs; Patient and Practitioner use structural projection |
 
 The structural profile names historical compatibility families. It makes no
 R4 conformance claim: EncounterHistory is an R5 resource. A semantic function
 rejects unsupported families rather than selecting structural conversion.
 An outer route or requested output label does not select a native version.
 Native R5 semantic projection is not provided by these functions.
+
+The five ancillary document families preserve existing linked-document import
+support through their owned R4 converters. This admission does not extend the
+GW semantic input/output or structural compatibility families. The document
+planner keeps complete cloned native entries and their references; these flat
+claims are bounded search projections, not a replacement for the full document.
+Embedded source claims remain the caller's explicit precedence decision and
+never confer identity or authority in this library.
+The existing owned Location converter retains zero coordinates, and the
+Appointment converter adds its explicit date/patient/location search fields.
+These additive values were absent from the predecessor's projections and are
+asserted separately alongside recorded wire compatibility.
 
 `org.hl7.fhir.api` is the internal compatibility tag for these flat claims,
 not a published HL7 namespace URI. Semantic imports emit that tag. Semantic
