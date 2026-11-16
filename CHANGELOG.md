@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Preserve explicit R4 document imports containing Device, Location, Coverage,
+  Appointment and AppointmentResponse through their existing owned converters.
+  Keep business Identifier systems in the document-support claim projection,
+  without adding generic fallback, changing clinical admission or asserting
+  authority from source metadata. Recorded linked-document fixtures cover the
+  previous accepted converter wire; full native documents remain caller-owned.
+
 - Add an explicit indexed R4 semantic profile for the admitted resource families,
   preserving recorded parent Observation component columns and raw historical
   identifiers while retaining supplied identifier systems and multiple coding

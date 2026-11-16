@@ -23,6 +23,16 @@ import {relatedPersonFhirR4ToFlat,relatedPersonFlatToFhirR4} from './convert-rel
 import {encounterFhirR4ToFlat,encounterFlatToFhirR4} from './convert-encounter.js'
 import {organizationFhirR4ToFlat,organizationFlatToFhirR4} from './convert-organization.js'
 import {practitionerRoleFhirR4ToFlat,practitionerRoleFlatToFhirR4} from './convert-practitioner-role.js'
+import {deviceFhirR4ToFlat,deviceFlatToFhirR4} from './convert-device.js'
+import {locationFhirR4ToFlat,locationFlatToFhirR4} from './convert-location.js'
+import {coverageFhirR4ToFlat,coverageFlatToFhirR4} from './convert-coverage.js'
+import {appointmentFhirR4ToFlat,appointmentFlatToFhirR4} from './convert-appointment.js'
+import {appointmentResponseFhirR4ToFlat,appointmentResponseFlatToFhirR4} from './convert-appointment-response.js'
+import {DeviceClaim} from '../claims/device-claims.js'
+import {LocationClaim} from '../claims/location-claims.js'
+import {CoverageClaim} from '../claims/coverage-claims.js'
+import {AppointmentClaim} from '../claims/appointment-claims.js'
+import {AppointmentResponseClaim} from '../claims/appointment-response-claims.js'
 
 /** Internal flat-claim compatibility tag; this is not a published HL7 namespace URI. */
 export const IndexedClaimsContext='org.hl7.fhir.api' as const
@@ -30,7 +40,7 @@ export const IndexedR4SemanticInputTypes=Object.freeze([R.MedicationStatement,R.
 export const IndexedR4SemanticOutputTypes=Object.freeze([R.AllergyIntolerance,R.CarePlan,R.Composition,R.Condition,R.Consent,R.DeviceUseStatement,R.DiagnosticReport,R.DocumentReference,R.Flag,R.Immunization,R.MedicationStatement,R.Observation,R.Procedure] as const)
 /** Historical compatibility families; EncounterHistory is not an R4 resource. */
 export const IndexedStructuralCompatibilityTypes=Object.freeze([R.ImagingStudy,R.ImmunizationRecommendation,R.Medication,R5.EncounterHistory,R.AdverseEvent] as const)
-export const DocumentSupportInputTypes=Object.freeze([R.Composition,R.Organization,R.PractitionerRole,R.Patient,R.Practitioner] as const)
+export const DocumentSupportInputTypes=Object.freeze([R.Composition,R.Organization,R.PractitionerRole,R.Patient,R.Practitioner,R.Device,R.Location,R.Coverage,R.Appointment,R.AppointmentResponse] as const)
 export type IndexedR4SemanticInputType=typeof IndexedR4SemanticInputTypes[number]
 export type IndexedR4SemanticOutputType=typeof IndexedR4SemanticOutputTypes[number]
 export type IndexedStructuralCompatibilityType=typeof IndexedStructuralCompatibilityTypes[number]
@@ -58,6 +68,11 @@ const pairs:Readonly<Record<string,Pair>>={
  [R.Encounter]:{read:encounterFhirR4ToFlat,write:encounterFlatToFhirR4,identifier:EncounterClaim.Identifier},
  [R.Organization]:{read:organizationFhirR4ToFlat,write:organizationFlatToFhirR4,identifier:OrganizationClaim.Identifier},
  [R.PractitionerRole]:{read:practitionerRoleFhirR4ToFlat,write:practitionerRoleFlatToFhirR4,identifier:PractitionerRoleClaim.Identifier},
+ [R.Device]:{read:deviceFhirR4ToFlat,write:deviceFlatToFhirR4,identifier:DeviceClaim.Identifier},
+ [R.Location]:{read:locationFhirR4ToFlat,write:locationFlatToFhirR4,identifier:LocationClaim.Identifier},
+ [R.Coverage]:{read:coverageFhirR4ToFlat,write:coverageFlatToFhirR4,identifier:CoverageClaim.Identifier},
+ [R.Appointment]:{read:appointmentFhirR4ToFlat,write:appointmentFlatToFhirR4,identifier:AppointmentClaim.Identifier},
+ [R.AppointmentResponse]:{read:appointmentResponseFhirR4ToFlat,write:appointmentResponseFlatToFhirR4,identifier:AppointmentResponseClaim.Identifier},
 }
 type ConceptSlot=Readonly<{property:string;claim:string;textClaim?:string;array?:boolean}>
 const conceptSlots:Readonly<Record<string,readonly ConceptSlot[]>>={

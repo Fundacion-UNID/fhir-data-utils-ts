@@ -1,0 +1,793 @@
+{
+  "source": {
+    "repository": "https://github.com/Global-DataCare/gdc-common-utils-ts",
+    "readOnly": true,
+    "moduleSha256": "1e13305d8e8daa9788d4b6595b713accac7d79a5cca608ea6f5dbe440a468a40",
+    "capture": "Actual previous document planner, five explicit converter families; synthetic linked R4 document, not authorization proof."
+  },
+  "input": {
+    "resourceType": "Bundle",
+    "type": "document",
+    "entry": [
+      {
+        "fullUrl": "Composition/synthetic-composition",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "synthetic-composition",
+          "status": "final",
+          "subject": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "section": [
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "46264-8"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "DeviceUseStatement/synthetic-use"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/synthetic-document-patient",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "synthetic-document-patient",
+          "name": [
+            {
+              "text": "Example Individual"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "DeviceUseStatement/synthetic-use",
+        "resource": {
+          "resourceType": "DeviceUseStatement",
+          "id": "synthetic-use",
+          "status": "active",
+          "subject": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "device": {
+            "reference": "Device/synthetic-device"
+          }
+        }
+      },
+      {
+        "fullUrl": "Device/synthetic-device",
+        "resource": {
+          "resourceType": "Device",
+          "id": "synthetic-device",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-device-business"
+            }
+          ],
+          "status": "active",
+          "deviceName": [
+            {
+              "name": "Synthetic café device",
+              "type": "user-friendly-name"
+            }
+          ],
+          "type": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "123456",
+                "display": "Synthetic device"
+              }
+            ]
+          },
+          "patient": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "location": {
+            "reference": "Location/synthetic-location"
+          },
+          "manufacturer": "Example Manufacturer",
+          "serialNumber": "synthetic-serial",
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "Device.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Location/synthetic-location",
+        "resource": {
+          "resourceType": "Location",
+          "id": "synthetic-location",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-location-business"
+            }
+          ],
+          "status": "active",
+          "name": "Synthetic location",
+          "type": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                  "code": "HOSP"
+                }
+              ]
+            }
+          ],
+          "managingOrganization": {
+            "reference": "Organization/synthetic-organization"
+          },
+          "position": {
+            "longitude": 0,
+            "latitude": 0
+          },
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "Location.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Coverage/synthetic-coverage",
+        "resource": {
+          "resourceType": "Coverage",
+          "id": "synthetic-coverage",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-coverage-business"
+            }
+          ],
+          "status": "active",
+          "beneficiary": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "payor": [
+            {
+              "reference": "Organization/synthetic-organization"
+            }
+          ],
+          "period": {
+            "start": "2026-01-01",
+            "end": "2026-12-31"
+          },
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "Coverage.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Appointment/synthetic-appointment",
+        "resource": {
+          "resourceType": "Appointment",
+          "id": "synthetic-appointment",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-appointment-business"
+            }
+          ],
+          "status": "booked",
+          "start": "2026-11-16T12:00:00Z",
+          "end": "2026-11-16T12:30:00Z",
+          "participant": [
+            {
+              "actor": {
+                "reference": "Patient/synthetic-document-patient"
+              },
+              "status": "accepted"
+            },
+            {
+              "actor": {
+                "reference": "Location/synthetic-location"
+              },
+              "status": "accepted"
+            }
+          ],
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "Appointment.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "AppointmentResponse/synthetic-response",
+        "resource": {
+          "resourceType": "AppointmentResponse",
+          "id": "synthetic-response",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-appointmentresponse-business"
+            }
+          ],
+          "appointment": {
+            "reference": "Appointment/synthetic-appointment"
+          },
+          "actor": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "participantStatus": "accepted",
+          "comment": "Literal café, water 水\nsecond line",
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "AppointmentResponse.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "prepared": {
+    "resourceType": "Bundle",
+    "type": "document",
+    "entry": [
+      {
+        "fullUrl": "Composition/synthetic-composition",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "synthetic-composition",
+          "status": "final",
+          "subject": {
+            "reference": "Patient/synthetic-authorized"
+          },
+          "section": [
+            {
+              "code": {
+                "coding": [
+                  {
+                    "system": "http://loinc.org",
+                    "code": "46264-8"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "DeviceUseStatement/synthetic-use"
+                }
+              ]
+            }
+          ],
+          "meta": {
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Composition.subject": "Patient/synthetic-authorized",
+              "Composition.section": "LOINC|46264-8"
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Patient/synthetic-document-patient",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "synthetic-document-patient",
+          "name": [
+            {
+              "text": "Example Individual"
+            }
+          ],
+          "meta": {
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Patient.id": "synthetic-document-patient",
+              "Patient.name[0].text": "Example Individual"
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "DeviceUseStatement/synthetic-use",
+        "resource": {
+          "resourceType": "DeviceUseStatement",
+          "id": "synthetic-use",
+          "status": "active",
+          "subject": {
+            "reference": "Patient/synthetic-authorized"
+          },
+          "device": {
+            "reference": "Device/synthetic-device"
+          },
+          "meta": {
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "DeviceUseStatement.subject": "Patient/synthetic-authorized",
+              "DeviceUseStatement.device": "Device/synthetic-device",
+              "DeviceUseStatement.status": "active",
+              "Composition.section": "LOINC|46264-8"
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Device/synthetic-device",
+        "resource": {
+          "resourceType": "Device",
+          "id": "synthetic-device",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-device-business"
+            }
+          ],
+          "status": "active",
+          "deviceName": [
+            {
+              "name": "Synthetic café device",
+              "type": "user-friendly-name"
+            }
+          ],
+          "type": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "123456",
+                "display": "Synthetic device"
+              }
+            ]
+          },
+          "patient": {
+            "reference": "Patient/synthetic-authorized"
+          },
+          "location": {
+            "reference": "Location/synthetic-location"
+          },
+          "manufacturer": "Example Manufacturer",
+          "serialNumber": "synthetic-serial",
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Device.device-name": "Synthetic café device",
+              "Device.identifier": "synthetic-device-business",
+              "Device.location": "Location/synthetic-location",
+              "Device.manufacturer": "Example Manufacturer",
+              "Device.patient": "Patient/synthetic-authorized",
+              "Device.serial-number": "synthetic-serial",
+              "Device.status": "active",
+              "Device.type": "http://snomed.info/sct|123456",
+              "Device.type-display": "Synthetic device",
+              "Device.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Location/synthetic-location",
+        "resource": {
+          "resourceType": "Location",
+          "id": "synthetic-location",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-location-business"
+            }
+          ],
+          "status": "active",
+          "name": "Synthetic location",
+          "type": [
+            {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                  "code": "HOSP"
+                }
+              ]
+            }
+          ],
+          "managingOrganization": {
+            "reference": "Organization/synthetic-organization"
+          },
+          "position": {
+            "longitude": 0,
+            "latitude": 0
+          },
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Location.identifier": "synthetic-location-business",
+              "Location.status": "active",
+              "Location.name": "Synthetic location",
+              "Location.type": "http://terminology.hl7.org/CodeSystem/v3-RoleCode|HOSP",
+              "Location.managing-organization": "Organization/synthetic-organization",
+              "Location.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Coverage/synthetic-coverage",
+        "resource": {
+          "resourceType": "Coverage",
+          "id": "synthetic-coverage",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-coverage-business"
+            }
+          ],
+          "status": "active",
+          "beneficiary": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "payor": [
+            {
+              "reference": "Organization/synthetic-organization"
+            }
+          ],
+          "period": {
+            "start": "2026-01-01",
+            "end": "2026-12-31"
+          },
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Coverage.identifier": "synthetic-coverage-business",
+              "Coverage.status": "active",
+              "Coverage.beneficiary": "Patient/synthetic-document-patient",
+              "Coverage.period-start": "2026-01-01",
+              "Coverage.period-end": "2026-12-31",
+              "Coverage.payor": "Organization/synthetic-organization",
+              "Coverage.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "Appointment/synthetic-appointment",
+        "resource": {
+          "resourceType": "Appointment",
+          "id": "synthetic-appointment",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-appointment-business"
+            }
+          ],
+          "status": "booked",
+          "start": "2026-11-16T12:00:00Z",
+          "end": "2026-11-16T12:30:00Z",
+          "participant": [
+            {
+              "actor": {
+                "reference": "Patient/synthetic-document-patient"
+              },
+              "status": "accepted"
+            },
+            {
+              "actor": {
+                "reference": "Location/synthetic-location"
+              },
+              "status": "accepted"
+            }
+          ],
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "Appointment.identifier": "synthetic-appointment-business",
+              "Appointment.status": "booked",
+              "Appointment.start": "2026-11-16T12:00:00Z",
+              "Appointment.end": "2026-11-16T12:30:00Z",
+              "Appointment.actor": "Patient/synthetic-document-patient,Location/synthetic-location",
+              "Appointment.part-status": "accepted",
+              "Appointment.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "fullUrl": "AppointmentResponse/synthetic-response",
+        "resource": {
+          "resourceType": "AppointmentResponse",
+          "id": "synthetic-response",
+          "identifier": [
+            {
+              "system": "urn:example:clinical-business",
+              "value": "synthetic-appointmentresponse-business"
+            }
+          ],
+          "appointment": {
+            "reference": "Appointment/synthetic-appointment"
+          },
+          "actor": {
+            "reference": "Patient/synthetic-document-patient"
+          },
+          "participantStatus": "accepted",
+          "comment": "Literal café, water 水\nsecond line",
+          "meta": {
+            "tag": [
+              {
+                "code": "synthetic-source"
+              }
+            ],
+            "claims": {
+              "@context": "org.hl7.fhir.api",
+              "AppointmentResponse.actor": "Patient/synthetic-document-patient",
+              "AppointmentResponse.appointment": "Appointment/synthetic-appointment",
+              "AppointmentResponse.comment": "Literal café, water 水\nsecond line",
+              "AppointmentResponse.identifier": "synthetic-appointmentresponse-business",
+              "AppointmentResponse.participant-status": "accepted",
+              "AppointmentResponse.custom": [
+                "source retained"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "rows": [
+    {
+      "resourceType": "Device",
+      "input": {
+        "resourceType": "Device",
+        "id": "synthetic-device",
+        "identifier": [
+          {
+            "system": "urn:example:clinical-business",
+            "value": "synthetic-device-business"
+          }
+        ],
+        "status": "active",
+        "deviceName": [
+          {
+            "name": "Synthetic café device",
+            "type": "user-friendly-name"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic device"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/synthetic-document-patient"
+        },
+        "location": {
+          "reference": "Location/synthetic-location"
+        },
+        "manufacturer": "Example Manufacturer",
+        "serialNumber": "synthetic-serial"
+      },
+      "legacyClaims": {
+        "@context": "org.hl7.fhir.api",
+        "Device.device-name": "Synthetic café device",
+        "Device.identifier": "synthetic-device-business",
+        "Device.location": "Location/synthetic-location",
+        "Device.manufacturer": "Example Manufacturer",
+        "Device.patient": "Patient/synthetic-document-patient",
+        "Device.serial-number": "synthetic-serial",
+        "Device.status": "active",
+        "Device.type": "http://snomed.info/sct|123456",
+        "Device.type-display": "Synthetic device"
+      }
+    },
+    {
+      "resourceType": "Location",
+      "input": {
+        "resourceType": "Location",
+        "id": "synthetic-location",
+        "identifier": [
+          {
+            "system": "urn:example:clinical-business",
+            "value": "synthetic-location-business"
+          }
+        ],
+        "status": "active",
+        "name": "Synthetic location",
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "code": "HOSP"
+              }
+            ]
+          }
+        ],
+        "managingOrganization": {
+          "reference": "Organization/synthetic-organization"
+        },
+        "position": {
+          "longitude": 0,
+          "latitude": 0
+        }
+      },
+      "legacyClaims": {
+        "@context": "org.hl7.fhir.api",
+        "Location.identifier": "synthetic-location-business",
+        "Location.status": "active",
+        "Location.name": "Synthetic location",
+        "Location.type": "http://terminology.hl7.org/CodeSystem/v3-RoleCode|HOSP",
+        "Location.managing-organization": "Organization/synthetic-organization"
+      }
+    },
+    {
+      "resourceType": "Coverage",
+      "input": {
+        "resourceType": "Coverage",
+        "id": "synthetic-coverage",
+        "identifier": [
+          {
+            "system": "urn:example:clinical-business",
+            "value": "synthetic-coverage-business"
+          }
+        ],
+        "status": "active",
+        "beneficiary": {
+          "reference": "Patient/synthetic-document-patient"
+        },
+        "payor": [
+          {
+            "reference": "Organization/synthetic-organization"
+          }
+        ],
+        "period": {
+          "start": "2026-01-01",
+          "end": "2026-12-31"
+        }
+      },
+      "legacyClaims": {
+        "@context": "org.hl7.fhir.api",
+        "Coverage.identifier": "synthetic-coverage-business",
+        "Coverage.status": "active",
+        "Coverage.beneficiary": "Patient/synthetic-document-patient",
+        "Coverage.period-start": "2026-01-01",
+        "Coverage.period-end": "2026-12-31",
+        "Coverage.payor": "Organization/synthetic-organization"
+      }
+    },
+    {
+      "resourceType": "Appointment",
+      "input": {
+        "resourceType": "Appointment",
+        "id": "synthetic-appointment",
+        "identifier": [
+          {
+            "system": "urn:example:clinical-business",
+            "value": "synthetic-appointment-business"
+          }
+        ],
+        "status": "booked",
+        "start": "2026-11-16T12:00:00Z",
+        "end": "2026-11-16T12:30:00Z",
+        "participant": [
+          {
+            "actor": {
+              "reference": "Patient/synthetic-document-patient"
+            },
+            "status": "accepted"
+          },
+          {
+            "actor": {
+              "reference": "Location/synthetic-location"
+            },
+            "status": "accepted"
+          }
+        ]
+      },
+      "legacyClaims": {
+        "@context": "org.hl7.fhir.api",
+        "Appointment.identifier": "synthetic-appointment-business",
+        "Appointment.status": "booked",
+        "Appointment.start": "2026-11-16T12:00:00Z",
+        "Appointment.end": "2026-11-16T12:30:00Z",
+        "Appointment.actor": "Patient/synthetic-document-patient,Location/synthetic-location",
+        "Appointment.part-status": "accepted"
+      }
+    },
+    {
+      "resourceType": "AppointmentResponse",
+      "input": {
+        "resourceType": "AppointmentResponse",
+        "id": "synthetic-response",
+        "identifier": [
+          {
+            "system": "urn:example:clinical-business",
+            "value": "synthetic-appointmentresponse-business"
+          }
+        ],
+        "appointment": {
+          "reference": "Appointment/synthetic-appointment"
+        },
+        "actor": {
+          "reference": "Patient/synthetic-document-patient"
+        },
+        "participantStatus": "accepted",
+        "comment": "Literal café, water 水\nsecond line"
+      },
+      "legacyClaims": {
+        "@context": "org.hl7.fhir.api",
+        "AppointmentResponse.actor": "Patient/synthetic-document-patient",
+        "AppointmentResponse.appointment": "Appointment/synthetic-appointment",
+        "AppointmentResponse.comment": "Literal café, water 水\nsecond line",
+        "AppointmentResponse.identifier": "synthetic-appointmentresponse-business",
+        "AppointmentResponse.participant-status": "accepted"
+      }
+    }
+  ]
+}
