@@ -16,9 +16,42 @@ payload choice cardinality, validate base64, or prove delivery. The selected
 FHIR version and profile must be validated separately. Persistence remains
 minimal identity plus flat claims; a native projection is an exchange value.
 
+## Payload text and the controlled R4 profile
+
+`CommunicationClaim.ContentString` holds the literal message body.
+`CommunicationClaim.Text` remains resource Narrative and `NoteText` remains a
+sender note. The payload adapters preserve Unicode, commas and JSON-significant
+whitespace without converting either of those other fields into a message body.
+The shared flat-resource graph builder also preserves that literal body; its
+existing trimming behavior for other claims is unchanged.
+
+Use `communicationPayloadItemFlatToFhirR4` and
+`communicationPayloadItemFhirR4ToFlat` for one exclusive R4 content choice.
+The item can contain a string, a reference or an attachment. References retain
+`reference`; attachments retain `contentType`, `data`, `title` and `url`.
+Additional native fields need a richer mapping and are rejected here rather
+than discarded.
+
+`communicationPayloadProfileFlatToFhirR4` and
+`communicationPayloadProfileFhirR4ToFlat` implement a controlled multipart
+profile: one optional text part, ordered reference parts, then one optional
+attachment. This supports a message body followed by its Bundle reference.
+The flat reference field stores its ordered values as CSV, so individual
+reference values containing commas cannot use this profile. Duplicate text or
+attachment parts and other native ordering are rejected to prevent data loss.
+The existing broad native exchange types remain unchanged.
+
+R4 permits `contentString`. R5 uses `contentCodeableConcept` for coded or textual
+content, including its `text` field. These R4 adapters reject that R5 choice;
+they do not relabel it as a string. Complete resource validation and the
+canonical Communication/inner-Bundle delivery profile remain separate steps.
+
 Standards references:
 
 - [FHIR R4 Communication](https://hl7.org/fhir/R4/communication.html)
+- [FHIR R4 payload choice](https://hl7.org/fhir/R4/communication-definitions.html#Communication.payload.content_x_)
+- [FHIR R5 payload choice](https://hl7.org/fhir/R5/communication-definitions.html#Communication.payload.content_x_)
+- [FHIR JSON string whitespace](https://hl7.org/fhir/R4/datatypes.html#string)
 - [FHIR R4 Attachment](https://hl7.org/fhir/R4/datatypes.html#Attachment)
 - [FHIR R4 Meta](https://hl7.org/fhir/R4/resource.html#Meta)
 

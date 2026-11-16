@@ -14,6 +14,12 @@ through the root and `fhir-types` subpath. Metadata extensions stay unknown
 unless a consumer supplies its explicit generic contract. These declarations
 do not perform full resource/profile validation or transport delivery. See
 [native Communication projection](NATIVE_COMMUNICATION_PROJECTION.md).
+`FhirR4CommunicationPayloadItem` adds an exclusive authoring choice without
+narrowing those existing partial types. The root and `converters` subpath expose
+single-item and controlled multipart R4 payload adapters. Literal message text
+has its own `CommunicationClaim.ContentString`; Narrative and notes retain
+their existing claims and wire values.
+
 
 `HL7_PERSONAL_RELATIONSHIP_ROLES` contains active, selectable concepts in the
 [personal relationship ValueSet](https://terminology.hl7.org/ValueSet-v3-PersonalRelationshipRoleType.html),

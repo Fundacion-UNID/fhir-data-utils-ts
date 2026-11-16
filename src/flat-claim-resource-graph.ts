@@ -1,3 +1,5 @@
+import {CommunicationClaim} from './claims/communication-claims.js'
+
 /** A canonical flat-claims resource entry; `entryId` is graph identity, never a business identifier. */
 export type FlatClaimResourceEntry = Readonly<{
   entryId: string
@@ -28,7 +30,7 @@ export function buildFlatClaimResourceEntry(input: Readonly<{
   for (const [claim, value] of Object.entries(input.claims)) {
     if (!claim.startsWith(prefix)) throw new TypeError('flat_claim_resource_type_mismatch')
     if (typeof value !== 'string') throw new TypeError('flat_claim_value_must_be_string')
-    claims[claim] = value.trim()
+    claims[claim] = claim === CommunicationClaim.ContentString ? value : value.trim()
   }
   return Object.freeze({ entryId, reference: `${resourceType}/${entryId}`, resourceType, claims: Object.freeze(claims) })
 }
