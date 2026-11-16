@@ -104,6 +104,16 @@ export type FhirCommunicationPayload = Readonly<{
   contentReference?: FhirReference
 }>
 
+/** Exclusive R4 content choice using the package's partial exchange primitives.
+ * This is not a complete resource/profile validator. R5 uses CodeableConcept
+ * instead of contentString and needs its own explicit adapter.
+ * https://hl7.org/fhir/R4/communication-definitions.html#Communication.payload.content_x_
+ */
+export type FhirR4CommunicationPayloadItem =
+  | Readonly<{contentString: string; contentReference?: never; contentAttachment?: never}>
+  | Readonly<{contentReference: FhirReference; contentString?: never; contentAttachment?: never}>
+  | Readonly<{contentAttachment: FhirAttachment; contentString?: never; contentReference?: never}>
+
 /** Native Communication exchange projection used at explicit adapter boundaries.
  * Optional fields allow partial projections; this is not full profile validation.
  * Consumers may specialize metadata explicitly without defining a second stored

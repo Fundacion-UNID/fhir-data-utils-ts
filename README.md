@@ -59,6 +59,12 @@ cross-sector policy belong downstream. See
 Typed native Communication exchange values use `FhirCommunicationResource`,
 `FhirAttachment` and `FhirMeta` from the root or `fhir-types` subpath. See the
 [native projection scope and validation limits](docs/NATIVE_COMMUNICATION_PROJECTION.md).
+For Communication payloads, use `CommunicationClaim.ContentString` and
+the explicit single-item or controlled multipart R4 adapters described in
+[the native Communication guide](docs/NATIVE_COMMUNICATION_PROJECTION.md).
+They preserve a body plus ordered Bundle references while keeping Narrative
+and sender notes separate.
+
 
 `normalizeFhirApiClaimKey` in the root and `claim-helpers` exports normalizes
 short or qualified version-neutral claim syntax. It does not check catalogue

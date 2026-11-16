@@ -33,6 +33,12 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
   package's standard primitives and keep consumer metadata extensions unknown
   unless explicitly specialized. A partial projection is not a complete FHIR
   validator and must not acquire transport or authorization behavior.
+- Use `CommunicationClaim.ContentString` for literal payload text; resource
+  Narrative and notes keep their own fields. Reuse the exclusive R4 item and
+  controlled body -> ordered references -> attachment adapters. Reject native
+  parts/fields that cannot round-trip through the selected flat profile, and
+  keep R5 CodeableConcept content under an explicit version adapter. The
+  Communication/inner-Bundle delivery contract remains independently enforced.
 - Put multi-resource authoring under `src/builders/`. A root historical module
   may remain only as a deprecated re-export shim so implementation is unique.
 - Reuse `clinical-resource-view` for claim fields, cards, Composition sections
