@@ -55,3 +55,22 @@ Release order is indivisible: local tarballs, complete local tests, merge and
 push the validated branch to `main`, publish, install exact registry versions
 downstream, then promote environments. Never commit a `file:`, Git, workspace
 or vendored dependency.
+
+## R5 subscription event selection and notification assembly
+
+The independent `subscription-r5` boundary owns native event-notification
+assembly and the supported literal-path `eq`/`ne` selection profile. The topic
+uses `canFilterBy.resource`; the subscription uses `filterBy.resourceType`.
+Both follow the R5 element names. Legacy field projection belongs at the
+consumer import boundary and must not rewrite stored records implicitly.
+
+A notification's caller supplies its timestamp and each entry's absolute
+`fullUrl`. The builder preserves the subscription reference, event/count
+strings, focus and context, and the parser resolves either the advertised
+full URL or the existing relative resource reference. Delivery, persistence,
+subscriber authority and identifier generation remain downstream.
+
+Specification evidence is the permanent HL7 FHIR R5 Subscription,
+SubscriptionTopic, SubscriptionStatus and Bundle definitions. Historical helper
+behavior was compared read-only in the installed former utility package;
+no source, import, dependency or re-export from that project is introduced.

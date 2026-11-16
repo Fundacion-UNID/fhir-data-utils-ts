@@ -80,6 +80,14 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
   Bundle parsing separate from the claims-first Communication being delivered.
   This package owns their reusable types and validation, never HTTP delivery,
   subscriber persistence, authentication or product notification policy.
+- Reuse `buildSubscriptionNotificationR5` and `matchesSubscriptionEventR5` for
+  the supported event profile. R5 Bundle invariant bdl-15 requires every
+  notification entry to have a caller-owned full URL; never emit a fixed or
+  malformed UUID. Preserve exact event/count strings and resolve advertised
+  focus URLs. `SubscriptionTopic.canFilterBy.resource` and
+  `Subscription.filterBy.resourceType` are distinct standard elements; project
+  legacy aliases explicitly at the consumer boundary, without rewriting data.
+
 - Validate and project the canonical outer `Bundle[type=batch]` ->
   `Communication` -> inner `Bundle[type=document|batch|collection]` structure
   here, but keep high-level editors/readers and application data contracts in
