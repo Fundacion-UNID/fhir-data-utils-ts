@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add explicit R4 document inspection: aggregate the four basic Bundle/document/
+  entry/Composition structure issues and resolve Patient display names through
+  documented reference aliases and first-Patient compatibility fallback. Preserve
+  name preference and input immutability without implying identity, signature
+  verification or complete FHIR schema validation.
+
 ## 0.7.1
 
 - Add the independent Communication payload-string claim and an exclusive R4

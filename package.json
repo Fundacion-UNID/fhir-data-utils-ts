@@ -7,6 +7,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./document-bundle-r4": {
+      "types": "./dist/document-bundle-r4.d.ts",
+      "default": "./dist/document-bundle-r4.js"
+    },
     "./clinical-resource-view": {
       "types": "./dist/clinical-resource-view.d.ts",
       "default": "./dist/clinical-resource-view.js"
