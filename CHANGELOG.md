@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add an explicit indexed R4 semantic profile for the admitted resource families,
+  preserving recorded parent Observation component columns and raw historical
+  identifiers while retaining supplied identifier systems and multiple coding
+  identities. Keep structural compatibility and document-support inputs behind
+  separate explicit profiles; neither is an automatic fallback or authority.
+  Uncoded AllergyIntolerance concept text remains text rather than creating a
+  coding identity in the new profile.
+
 - Add explicit R4 document inspection: aggregate the four basic Bundle/document/
   entry/Composition structure issues and resolve Patient display names through
   documented reference aliases and first-Patient compatibility fallback. Preserve

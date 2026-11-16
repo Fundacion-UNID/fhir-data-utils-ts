@@ -35,3 +35,4 @@ export * from './materialize-claims-first-resource.js'
 export * from './convert-us-core-patient-demographics.js'
 
 export * from './convert-communication-payload.js'
+export * from './indexed-r4-profile.js'

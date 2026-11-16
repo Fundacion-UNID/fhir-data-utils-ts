@@ -1,5 +1,10 @@
 # Independent FHIR contracts
 
+`indexed-r4` owns the explicit indexed semantic profile and separate opt-in
+structural/document-support profiles. It preserves the admitted stored parent
+component representation without a silent graph migration. See
+[indexed clinical compatibility](INDEXED_CLINICAL_COMPATIBILITY.md).
+
 `document-bundle-r4` owns basic document-shape checks and Patient display-name
 inspection with explicit compatibility fallback. It does not bind imported
 subjects or validate identity. See [R4 document inspection](R4_DOCUMENT_INSPECTION.md).

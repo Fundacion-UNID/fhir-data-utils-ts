@@ -11,6 +11,13 @@ an explicit first-Patient compatibility fallback. Neither result verifies
 identity or a signature. See [R4 document inspection](docs/R4_DOCUMENT_INSPECTION.md)
 for the supported input profile and name-selection rules.
 
+`indexed-r4` composes the admitted semantic import/export pairs under an explicit
+indexed R4 profile. Separate opt-in profiles cover historical structural
+compatibility and document-support entries. The indexed profile retains parent
+Observation component columns rather than migrating them to child resources.
+See [indexed clinical compatibility](docs/INDEXED_CLINICAL_COMPATIBILITY.md)
+for exact resource sets, identifier and coding rules, and representation limits.
+
 Release order is local-first: local tarball consumers, complete local matrix,
 merge and push `main`, publish bottom-up, install exact registry versions, then
 staging. Never commit `file:`, Git or workspace dependencies.
