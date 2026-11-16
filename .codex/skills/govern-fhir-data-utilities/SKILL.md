@@ -54,6 +54,11 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
   name comparison and complete schema validation outside these two helpers.
 - Preserve correlations by creating one claims-first row per member, party or
   component when parallel arrays would lose identity.
+- For existing indexed R4 records, use the explicit `indexed-r4` semantic
+  compatibility profile when parent Observation JSON columns must be retained.
+  Do not switch that profile to the independent child graph or silently use
+  structural fallback. Structural compatibility and document-support families
+  each require their own explicit profile; EncounterHistory does not become R4.
 - Reconstruct native arrays such as `Observation.component[]` only during FHIR
   projection. Do not invent resource-specific scalar aliases for indexing.
 - Keep Group membership and ResearchStudy associated parties descriptive;

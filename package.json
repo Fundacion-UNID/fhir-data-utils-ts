@@ -7,6 +7,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./indexed-r4": {
+      "types": "./dist/converters/indexed-r4-profile.d.ts",
+      "default": "./dist/converters/indexed-r4-profile.js"
+    },
     "./document-bundle-r4": {
       "types": "./dist/document-bundle-r4.d.ts",
       "default": "./dist/document-bundle-r4.js"

@@ -35,7 +35,9 @@ export const ObservationCategoryCodes = Object.freeze({
  * Canonical flat claim keys for Observation authoring and projection.
  *
  * The `component-*` and `bp-*` keys are read-only migration inputs. They are
- * not FHIR SearchParameters and must never be emitted by a current writer.
+ * not FHIR SearchParameters. General scalar/graph writers do not emit them;
+ * the explicit indexed R4 compatibility profile retains existing parent columns
+ * without initiating a representation migration.
  */
 export const ObservationClaim = Object.freeze({
   BasedOn: 'Observation.based-on',
