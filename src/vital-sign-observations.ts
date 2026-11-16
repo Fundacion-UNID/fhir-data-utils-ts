@@ -1,3 +1,4 @@
+import {observationFromFlatToFhirR4} from './converters/convert-observation.js'
 import { buildFlatClaimResourceEntry, type FlatClaimResourceEntry } from './flat-claim-resource-graph.js'
 import { CompositionAttesterModes, CompositionClaim } from './claims/composition-claims.js'
 import {
@@ -647,3 +648,35 @@ export const VITAL_SIGN_EXAMPLES = Object.freeze({
     Object.freeze({ entryId: 'hr-example-2', kind: 'heart-rate' as const, measuredAt: '2026-09-21T08:00:00Z', value: 72 }),
   ]),
 })
+
+/** Scalar import/example boundary; component panels continue to use buildVitalSignObservation and its correlated graph. */
+export type VitalSignObservationEntryInput=Readonly<{
+  identifier:string;subject:string;code:CodingDescriptor;unit?:CodingDescriptor;
+  effectiveDateTime?:string;issued?:string;status?:string;note?:string;
+  valueQuantity?:number;valueString?:string;
+}>
+/** Builds one exchange entry from owned compact coding claims, without performer, attester or access authority. */
+export function buildVitalSignObservationEntry(input:VitalSignObservationEntryInput){
+  const identifier=required(input.identifier,'vital_sign_entry_id_required')
+  const subject=required(input.subject,'vital_sign_subject_required')
+  if(!input.code?.system||!input.code.code||input.code.claim!==`${input.code.system}|${input.code.code}`)throw new TypeError('vital_sign_code_invalid')
+  if(input.unit&&(!input.unit.system||!input.unit.code||input.unit.claim!==`${input.unit.system}|${input.unit.code}`))throw new TypeError('vital_sign_unit_invalid')
+  if(input.valueQuantity!==undefined&&!Number.isFinite(input.valueQuantity))throw new TypeError('vital_sign_value_invalid')
+  if(input.valueQuantity!==undefined&&input.valueString)throw new TypeError('vital_sign_value_choice_invalid')
+  const claims:Record<string,string>={
+    '@context':'org.hl7.fhir.api',
+    [ObservationClaim.Identifier]:identifier,[ObservationClaim.Subject]:subject,
+    [ObservationClaim.Status]:input.status??'final',[ObservationClaim.Category]:ObservationCategoryCodes.VitalSigns.claim,
+    [ObservationClaim.Code]:input.code.claim,
+  }
+  if(input.code.display)claims[ObservationClaim.CodeText]=input.code.display
+  if(input.effectiveDateTime){normalizeDateTime(input.effectiveDateTime);claims[ObservationClaim.EffectiveDateTime]=input.effectiveDateTime.trim()}
+  const date=input.effectiveDateTime||input.issued
+  if(date){normalizeDateTime(date);claims[ObservationClaim.Date]=date.trim()}
+  if(input.note)claims[ObservationClaim.Note]=input.note
+  if(input.valueQuantity!==undefined)claims[ObservationClaim.ValueQuantityNumber]=String(input.valueQuantity)
+  if(input.unit)claims[ObservationClaim.ValueQuantityUnit]=input.unit.claim
+  if(input.valueString)claims[ObservationClaim.ValueString]=input.valueString
+  const native=observationFromFlatToFhirR4(claims)
+  return {id:identifier,fullUrl:identifier.startsWith('urn:')?identifier:`urn:uuid:${identifier}`,type:'Observation-entry-v1.0',resource:{...native,meta:{...native.meta,claims}}}
+}

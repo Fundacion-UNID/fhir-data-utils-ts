@@ -52,6 +52,10 @@ description: Implement or audit neutral FHIR Observation claim catalogs, vital-s
 - Add a missing neutral constant here once and consume it downstream. Do not
   copy `Observation.*`, LOINC, UCUM or category strings into portals,
   assistants, tests or snippets.
+- The scalar exchange bridge `buildVitalSignObservationEntry` uses the same
+  owned coding descriptors and native converter. Preserve supplied timestamp
+  spelling after validation; do not use it to replace a component panel's
+  correlated primary/member graph or infer performer/attester authority.
 - Keep displays separate from `system|code` tokens and local-language text.
 - For repeated vital signs, keep every raw reading as `registered`, require the
   configured cadence before deriving a `preliminary` mean, and preserve the

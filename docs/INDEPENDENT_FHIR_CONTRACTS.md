@@ -54,3 +54,26 @@ describe a role and never establish legal evidence, employment or access.
 `HealthcareConsentPurposes` contains the selected HL7 v3 ActReason code values.
 Occupation definitions, role eligibility and authorization remain downstream.
 The package has no dependency on an occupation-catalog provider.
+
+## Native R4 adapters and Communication participant projections
+
+`clinical-resource-adapters` composes the existing semantic R4 converters.
+Unsupported resource families retain their structural fallback; explicit
+`meta.claims`, primary business identifiers and language remain separate from
+technical resource ids. Qualified API keys are normalized at import, while
+version-specific claim contexts are rejected.
+
+`communication-participant-search` owns normalization, projection indexes,
+matching, pagination and native Parameters construction for its supported
+profile. Actor, user and target controls are profile extensions. Matching a
+filter does not authenticate or authorize a participant.
+
+`buildVitalSignObservationEntry` is the scalar exchange bridge used by examples;
+its coding keys come from the Observation catalog and it retains the supplied
+timestamp spelling after validation. It emits no performer or attester. The
+existing primary/member graph remains the owner of component panels.
+
+`buildClinicalDocumentBundle` accepts an explicit caller-owned subject
+projection for absolute subject references. The supplied full URL must match
+the Composition subject exactly. It preserves clinical subject claims and
+adds only native document context; it creates no index identity or authority.

@@ -24,3 +24,19 @@ test('clinical document builder preserves exact subject, provenance and section 
   assert.equal(result.entry.find(entry=>entry.resource.resourceType==='Condition').resource.meta.claims[fhir.ConditionClaim.CodeText],'Synthetic condition');
   assert.deepEqual(result,fhir.buildClinicalDocumentBundle(input));
 });
+
+test('retains explicit caller-owned Patient context for an absolute subject reference without changing clinical claims',()=>{
+  const subjectReference='did:web:example.invalid:example-tenant'
+  const input={documentId:'clinical-document',compositionId:'clinical-composition',subjectReference,title:'Synthetic clinical draft',documentType:fhir.FHIR_IPS_DOCUMENT_TYPE_CLAIM,status:'final',date:'2026-01-01T00:00:00Z',authorReferences:[subjectReference],subjectProjection:{resourceType:'Patient',id:'patient-document-context',fullUrl:subjectReference},entries:[{resourceType:'Condition',entryId:'clinical-condition',claims:{[fhir.ConditionClaim.CodeText]:'Synthetic condition'},sectionCodes:[fhir.FHIR_IPS_SECTION_CODES.Problems]}]}
+  const result=fhir.buildClinicalDocumentBundle(input)
+  assert.equal(result.entry.length,3)
+  assert.equal(result.entry[1].fullUrl,subjectReference)
+  assert.deepEqual(result.entry[1].resource,{resourceType:'Patient',id:'patient-document-context'})
+  assert.equal(result.entry[2].resource.meta.claims[fhir.ConditionClaim.Subject],subjectReference)
+  assert.deepEqual(result.entry[0].resource.subject,{reference:subjectReference})
+})
+test('rejects a subject projection whose supplied URL or relative identity contradicts the Composition subject',()=>{
+  const base={documentId:'clinical-document',compositionId:'clinical-composition',subjectReference:'did:web:example.invalid:example-tenant',title:'Synthetic clinical draft',documentType:fhir.FHIR_IPS_DOCUMENT_TYPE_CLAIM,status:'final',date:'2026-01-01T00:00:00Z',authorReferences:['Practitioner/clinical-document-author'],entries:[{resourceType:'Condition',entryId:'clinical-condition',claims:{},sectionCodes:[]}]}
+  assert.throws(()=>fhir.buildClinicalDocumentBundle({...base,subjectProjection:{resourceType:'Patient',id:'patient-document-context',fullUrl:'urn:uuid:other-document-context'}}))
+  assert.throws(()=>fhir.buildClinicalDocumentBundle({...base,subjectReference:'Patient/expected-document-context',subjectProjection:{resourceType:'Patient',id:'another-document-context'}}))
+})

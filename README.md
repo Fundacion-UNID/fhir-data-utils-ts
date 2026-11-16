@@ -296,3 +296,18 @@ review families `allergies-intolerances`, `procedures`, `diagnostics` and
 `immunizations` without product-specific literals.
 
 Independent canonicalization and HL7 functional coding exports are documented in [Independent FHIR contracts](docs/INDEPENDENT_FHIR_CONTRACTS.md).
+
+`clinical-resource-adapters` imports native R4 through the existing semantic
+converters, preserves explicit `meta.claims` and business identifiers, and
+exports version-neutral claim maps as native R4. Qualified API keys are
+accepted at this boundary; version-specific claim namespaces are rejected.
+`communication-participant-search` owns pure token normalization, indexed
+matching and pagination. Its actor/user/target controls are profile extensions
+and never authorize a caller. Scalar vital-sign exchange examples reuse
+`buildVitalSignObservationEntry`; panel/component authoring continues through
+the existing correlated Observation graph.
+The document builder also accepts an explicit `subjectProjection` when an
+absolute Composition subject needs an included native context resource. Its
+full URL must match that subject; the caller supplies the resource type and id.
+
+The public `fhir-data-utils-ts/fixtures/fhir-ips-bundle-all-sections.json` reference asset preserves the existing HL7 IPS all-sections example used by integration tests (42 entries, 17 resource types). Its source reference is https://build.fhir.org/ig/HL7/fhir-ips/en/Bundle-bundle-ips-all-sections.json.html. It is synthetic interoperability data, not an identity or authorization grant. The package contract pins the inherited bytes so upgrades are explicit.
