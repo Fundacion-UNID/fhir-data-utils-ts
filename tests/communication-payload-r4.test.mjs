@@ -10,6 +10,15 @@ const reference=fhir.FHIR_APPOINTMENT_COMMUNICATION_TEST_DATA.appointmentReferen
 const attachment=fhir.FHIR_APPOINTMENT_COMMUNICATION_TEST_DATA.communication.payload[0].contentAttachment
 const api=()=>import('../dist/converters/convert-communication-payload.js')
 
+test('the generic resource graph retains literal payload bytes while prior scalar claims retain trimming',()=>{
+ const input={[C.ContentString]:body,[C.Text]:'  Narrative summary  ',[C.NoteText]:'  Sender note  '}
+ const entry=fhir.buildFlatClaimResourceEntry({entryId:'literal-body-one',resourceType:'Communication',claims:input})
+ assert.equal(entry.claims[C.ContentString],body)
+ assert.equal(entry.claims[C.Text],'Narrative summary')
+ assert.equal(entry.claims[C.NoteText],'Sender note')
+ assert.deepEqual(input,{[C.ContentString]:body,[C.Text]:'  Narrative summary  ',[C.NoteText]:'  Sender note  '})
+})
+
 test('owns a payload-string claim while retaining the independent Narrative and note wire keys',()=>{
  assert.equal(C.ContentString,'Communication.content-string')
  assert.notEqual(C.ContentString,C.Text);assert.notEqual(C.ContentString,C.NoteText)
