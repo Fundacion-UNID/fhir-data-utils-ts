@@ -1,5 +1,9 @@
 # Independent FHIR contracts
 
+`document-bundle-r4` owns basic document-shape checks and Patient display-name
+inspection with explicit compatibility fallback. It does not bind imported
+subjects or validate identity. See [R4 document inspection](R4_DOCUMENT_INSPECTION.md).
+
 `normalizeFhirApiClaimKey` accepts short claim names or their qualified
 `org.hl7.fhir.api` spelling and rejects version-specific namespaces. It validates
 syntax only; resource/parameter catalogue membership and permission checks stay

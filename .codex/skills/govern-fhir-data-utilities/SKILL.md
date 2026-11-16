@@ -48,6 +48,10 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
   persisted data stays in flat claims and native output is an exchange
   projection. Caller-supplied final status and attester references are not
   verified signatures or proof of authority.
+- Use `document-bundle-r4` for basic R4 document structure and Patient display
+  name inspection. Its documented first-Patient fallback is compatibility
+  behavior, not verified identity. Keep subject rebinding, import planning,
+  name comparison and complete schema validation outside these two helpers.
 - Preserve correlations by creating one claims-first row per member, party or
   component when parallel arrays would lose identity.
 - Reconstruct native arrays such as `Observation.component[]` only during FHIR

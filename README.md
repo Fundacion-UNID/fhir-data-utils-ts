@@ -4,6 +4,13 @@ FHIR-neutral data contracts for flat claims, governed SearchParameter names,
 resource graphs and explicit R4/R5/R6 projection adapters. This package has no
 network clients and no dependency on downstream product packages.
 
+`document-bundle-r4` exposes `validateR4DocumentBundleStructure` for the four
+basic document-shape checks and `getR4DocumentBundlePatientFullName` for display
+name extraction. The latter uses the Composition subject reference and retains
+an explicit first-Patient compatibility fallback. Neither result verifies
+identity or a signature. See [R4 document inspection](docs/R4_DOCUMENT_INSPECTION.md)
+for the supported input profile and name-selection rules.
+
 Release order is local-first: local tarball consumers, complete local matrix,
 merge and push `main`, publish bottom-up, install exact registry versions, then
 staging. Never commit `file:`, Git or workspace dependencies.
