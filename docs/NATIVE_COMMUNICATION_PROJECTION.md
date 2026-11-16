@@ -22,6 +22,8 @@ minimal identity plus flat claims; a native projection is an exchange value.
 `CommunicationClaim.Text` remains resource Narrative and `NoteText` remains a
 sender note. The payload adapters preserve Unicode, commas and JSON-significant
 whitespace without converting either of those other fields into a message body.
+The shared flat-resource graph builder also preserves that literal body; its
+existing trimming behavior for other claims is unchanged.
 
 Use `communicationPayloadItemFlatToFhirR4` and
 `communicationPayloadItemFhirR4ToFlat` for one exclusive R4 content choice.

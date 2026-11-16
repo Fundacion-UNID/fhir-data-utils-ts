@@ -9,7 +9,9 @@
   that retain literal text, ordered resource references and existing attachment
   fields, reject unrepresentable choices/order, and preserve Narrative/note
   separation. R5 coded payloads require an explicit R5 adapter. Existing native
-  partial types and all prior claim wire values remain unchanged.
+  partial types and all prior claim wire values remain unchanged. The shared
+  resource graph builder preserves literal message-body whitespace while
+  retaining its existing trimming behavior for every prior claim.
 - Add native R5 event-notification assembly with caller-owned full URLs and
   timestamps, exact integer64 counters and focus binding. Resolve advertised
   full-resource URLs while retaining relative-reference parsing.
