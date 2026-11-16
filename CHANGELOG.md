@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Add native R5 event-notification assembly with caller-owned full URLs and
+  timestamps, exact integer64 counters and focus binding. Resolve advertised
+  full-resource URLs while retaining relative-reference parsing.
+- Add the supported literal-path subscription event matcher with R5 topic and
+  subscription field names, explicit comparator declarations and rejection of
+  unsupported filters. Keep transport, persistence and authorization downstream.
+
 ## 0.7.0
 
 - Expose the clinical local-text/international-display reader so summaries can
