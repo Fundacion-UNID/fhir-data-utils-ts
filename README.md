@@ -317,3 +317,5 @@ absolute Composition subject needs an included native context resource. Its
 full URL must match that subject; the caller supplies the resource type and id.
 
 The public `fhir-data-utils-ts/fixtures/fhir-ips-bundle-all-sections.json` reference asset preserves the existing HL7 IPS all-sections example used by integration tests (42 entries, 17 resource types). Its source reference is https://build.fhir.org/ig/HL7/fhir-ips/en/Bundle-bundle-ips-all-sections.json.html. It is synthetic interoperability data, not an identity or authorization grant. The package contract pins the inherited bytes so upgrades are explicit.
+
+`fhir-data-utils-ts/fhir-parameters` exports `buildFhirParametersResourceFromSearchParams` for typed native primitive choices, including repeated values. It omits missing/empty values, preserves false and zero, and rejects non-finite numbers. Operation semantics and authorization remain with the consumer.

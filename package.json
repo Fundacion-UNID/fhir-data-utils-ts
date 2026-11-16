@@ -171,7 +171,11 @@
       "types": "./dist/communication-participant-search.d.ts",
       "default": "./dist/communication-participant-search.js"
     },
-    "./fixtures/fhir-ips-bundle-all-sections.json": "./fixtures/fhir-ips-bundle-all-sections.json"
+    "./fixtures/fhir-ips-bundle-all-sections.json": "./fixtures/fhir-ips-bundle-all-sections.json",
+    "./fhir-parameters": {
+      "types": "./dist/fhir-parameters.d.ts",
+      "default": "./dist/fhir-parameters.js"
+    }
   },
   "files": [
     "dist",

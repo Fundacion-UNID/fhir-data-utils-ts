@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Expose a neutral native Parameters builder for repeated primitive search values, preserving false and zero and rejecting non-finite numbers.
+
 - Expose the complete IPS all-sections reference JSON through a public fixture subpath, preserving its reference bytes for independent consumer integration tests.
 
 - Own native R4 import/export adapters over the existing converters, preserving

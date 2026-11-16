@@ -1,8 +1,7 @@
 // Copyright 2026 Antifraud Services Inc. under Apache-2.0.
 // Pure indexed Communication filtering. Actor/user/target controls are explicit profile extensions, not authorization decisions or standard FHIR search declarations.
 import {CommunicationClaim,CommunicationParticipantIndexClaim} from './claims/communication-claims.js'
-type SearchParameterPrimitive=string|number|boolean|readonly(string|number|boolean)[]
-type FhirParametersResource={resourceType:'Parameters';parameter:Array<{name?:unknown;valueString?:unknown;valueUri?:unknown;valueCode?:unknown;valueReference?:{reference?:unknown};valueCoding?:{code?:unknown};valueInteger?:unknown;valueBoolean?:unknown;valueDecimal?:unknown}>}
+import {buildFhirParametersResourceFromSearchParams,type SearchParameterPrimitive,type FhirParametersResource} from './fhir-parameters.js'
 export const CommunicationParticipantPrefixes = Object.freeze({
   Did: 'did:',
   Email: 'email:',
@@ -497,10 +496,4 @@ function normalizePositiveInteger(value: unknown): number | undefined {
 }
 function normalizePageValue(value: unknown): number {
   return normalizePositiveInteger(value) || 1;
-}
-
-function buildFhirParametersResourceFromSearchParams(params:Readonly<Record<string,SearchParameterPrimitive|undefined>>):FhirParametersResource{
- const parameter:FhirParametersResource['parameter']=[]
- for(const [name,value]of Object.entries(params)){if(value===undefined||value===null)continue;for(const item of Array.isArray(value)?value:[value]){if(typeof item==='string'&&!item.trim())continue;if(typeof item==='boolean')parameter.push({name,valueBoolean:item});else if(typeof item==='number')parameter.push({name,...(Number.isInteger(item)?{valueInteger:item}:{valueDecimal:item})});else parameter.push({name,valueString:String(item).trim()})}}
- return {resourceType:'Parameters',parameter}
 }

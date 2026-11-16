@@ -41,3 +41,4 @@ export * from './clinical-resource-view.js'
 
 export * from './clinical-resource-adapters.js'
 export * from './communication-participant-search.js'
+export * from './fhir-parameters.js'
