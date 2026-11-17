@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.2
+
 - Preserve explicit R4 document imports containing Device, Location, Coverage,
   Appointment and AppointmentResponse through their existing owned converters.
   Keep business Identifier systems in the document-support claim projection,
