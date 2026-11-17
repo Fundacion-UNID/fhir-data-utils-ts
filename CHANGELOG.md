@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.2
 
 - Expose a neutral native Parameters builder for repeated primitive search values, preserving false and zero and rejecting non-finite numbers.
 
