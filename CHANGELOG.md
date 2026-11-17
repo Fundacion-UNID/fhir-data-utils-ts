@@ -14,6 +14,27 @@
 - Add a scalar vital-sign exchange bridge using canonical compact coding and
   the existing Observation converter, without performer or access authority.
 
+- Preserve explicit R4 document imports containing Device, Location, Coverage,
+  Appointment and AppointmentResponse through their existing owned converters.
+  Keep business Identifier systems in the document-support claim projection,
+  without adding generic fallback, changing clinical admission or asserting
+  authority from source metadata. Recorded linked-document fixtures cover the
+  previous accepted converter wire; full native documents remain caller-owned.
+
+- Add an explicit indexed R4 semantic profile for the admitted resource families,
+  preserving recorded parent Observation component columns and raw historical
+  identifiers while retaining supplied identifier systems and multiple coding
+  identities. Keep structural compatibility and document-support inputs behind
+  separate explicit profiles; neither is an automatic fallback or authority.
+  Uncoded AllergyIntolerance concept text remains text rather than creating a
+  coding identity in the new profile.
+
+- Add explicit R4 document inspection: aggregate the four basic Bundle/document/
+  entry/Composition structure issues and resolve Patient display names through
+  documented reference aliases and first-Patient compatibility fallback. Preserve
+  name preference and input immutability without implying identity, signature
+  verification or complete FHIR schema validation.
+
 ## 0.7.1
 
 - Add the independent Communication payload-string claim and an exclusive R4

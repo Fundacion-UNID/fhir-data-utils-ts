@@ -1,0 +1,972 @@
+{
+  "provenance": {
+    "sourceRepository": "https://github.com/Global-DataCare/gdc-common-utils-ts",
+    "sourceModule": "src/utils/clinical-resource-converters.ts",
+    "version": "2.9.30",
+    "moduleSha256": "f307791b49352f01349a50111b26580aa7444f174e81ecd989061ea9e9ff97d1",
+    "purpose": "Recorded synthetic wire vectors; package tests do not load the original implementation."
+  },
+  "incoming": [
+    "MedicationStatement",
+    "Observation",
+    "AllergyIntolerance",
+    "Condition",
+    "DeviceUseStatement",
+    "Flag",
+    "Procedure",
+    "Immunization",
+    "DocumentReference",
+    "RelatedPerson",
+    "DiagnosticReport",
+    "CarePlan",
+    "Encounter",
+    "Consent"
+  ],
+  "outgoing": [
+    "AllergyIntolerance",
+    "CarePlan",
+    "Composition",
+    "Condition",
+    "Consent",
+    "DeviceUseStatement",
+    "DiagnosticReport",
+    "DocumentReference",
+    "Flag",
+    "Immunization",
+    "MedicationStatement",
+    "Observation",
+    "Procedure"
+  ],
+  "rows": [
+    {
+      "resourceType": "MedicationStatement",
+      "input": {
+        "resourceType": "MedicationStatement",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "MedicationStatement.identifier": "synthetic-business-id",
+        "MedicationStatement.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "MedicationStatement.status": "active",
+        "MedicationStatement.code": "http://snomed.info/sct|123456",
+        "MedicationStatement.code-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "MedicationStatement",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "input": {
+        "resourceType": "Observation",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Observation.code": "http://snomed.info/sct|123456",
+        "Observation.code-system": "http://snomed.info/sct",
+        "Observation.code-value": "123456",
+        "Observation.code-display": "Synthetic concept",
+        "Observation.identifier": "synthetic-business-id",
+        "Observation.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Observation.status": "final",
+        "Observation.subject": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "native": {
+        "resourceType": "Observation",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "component": []
+      }
+    },
+    {
+      "resourceType": "AllergyIntolerance",
+      "input": {
+        "resourceType": "AllergyIntolerance",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "AllergyIntolerance.identifier": "synthetic-business-id",
+        "AllergyIntolerance.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "AllergyIntolerance.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "AllergyIntolerance.code": "http://snomed.info/sct|123456",
+        "AllergyIntolerance.code-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "AllergyIntolerance",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resourceType": "Condition",
+      "input": {
+        "resourceType": "Condition",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Condition.identifier": "synthetic-business-id",
+        "Condition.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Condition.code": "http://snomed.info/sct|123456",
+        "Condition.code-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "Condition",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resourceType": "DeviceUseStatement",
+      "input": {
+        "resourceType": "DeviceUseStatement",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "device": {
+          "reference": "Device/synthetic-device"
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "DeviceUseStatement.identifier": "synthetic-business-id",
+        "DeviceUseStatement.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "DeviceUseStatement.device": "Device/synthetic-device",
+        "DeviceUseStatement.status": "active"
+      },
+      "native": {
+        "resourceType": "DeviceUseStatement",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "device": {
+          "reference": "Device/synthetic-device"
+        },
+        "status": "active"
+      }
+    },
+    {
+      "resourceType": "Flag",
+      "input": {
+        "resourceType": "Flag",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Flag.identifier": "synthetic-business-id",
+        "Flag.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Flag.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Flag.status": "active",
+        "Flag.code": "http://snomed.info/sct|123456",
+        "Flag.code-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "Flag",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "resourceType": "Procedure",
+      "input": {
+        "resourceType": "Procedure",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "completed",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Procedure.code": "http://snomed.info/sct|123456",
+        "Procedure.code-display": "Synthetic concept",
+        "Procedure.identifier": "synthetic-business-id",
+        "Procedure.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Procedure.status": "completed",
+        "Procedure.subject": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "native": {
+        "resourceType": "Procedure",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "completed",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "resourceType": "Immunization",
+      "input": {
+        "resourceType": "Immunization",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "completed",
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Immunization.identifier": "synthetic-business-id",
+        "Immunization.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Immunization.status": "completed",
+        "Immunization.vaccine-code": "http://snomed.info/sct|123456",
+        "Immunization.vaccine-code-display": "Synthetic concept",
+        "Immunization.subject": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "native": {
+        "resourceType": "Immunization",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "resourceType": "DocumentReference",
+      "input": {
+        "resourceType": "DocumentReference",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "DocumentReference.identifier": "synthetic-business-id",
+        "DocumentReference.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "DocumentReference.type": "http://snomed.info/sct|123456",
+        "DocumentReference.type-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "DocumentReference",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "content": [
+          {
+            "attachment": {}
+          }
+        ]
+      }
+    },
+    {
+      "resourceType": "RelatedPerson",
+      "input": {
+        "resourceType": "RelatedPerson",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "RelatedPerson.identifier": "synthetic-business-id",
+        "RelatedPerson.patient": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      }
+    },
+    {
+      "resourceType": "DiagnosticReport",
+      "input": {
+        "resourceType": "DiagnosticReport",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "DiagnosticReport.code": "http://snomed.info/sct|123456",
+        "DiagnosticReport.code-display": "Synthetic concept",
+        "DiagnosticReport.identifier": "synthetic-business-id",
+        "DiagnosticReport.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "DiagnosticReport.status": "final",
+        "DiagnosticReport.subject": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "native": {
+        "resourceType": "DiagnosticReport",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "resourceType": "CarePlan",
+      "input": {
+        "resourceType": "CarePlan",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "intent": "plan"
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "CarePlan.identifier": "synthetic-business-id",
+        "CarePlan.intent": "plan",
+        "CarePlan.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "CarePlan.status": "active",
+        "CarePlan.subject": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "native": {
+        "resourceType": "CarePlan",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "intent": "plan",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "resourceType": "Encounter",
+      "input": {
+        "resourceType": "Encounter",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Encounter.identifier": "synthetic-business-id",
+        "Encounter.status": "active",
+        "Encounter.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Encounter.patient": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      }
+    },
+    {
+      "resourceType": "Consent",
+      "input": {
+        "resourceType": "Consent",
+        "id": "synthetic-internal-id",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "scope": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        }
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Consent.identifier": "synthetic-business-id",
+        "Consent.status": "active",
+        "Consent.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Consent.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Consent.scope": "http://snomed.info/sct|123456",
+        "Consent.scope-display": "Synthetic concept"
+      },
+      "native": {
+        "resourceType": "Consent",
+        "identifier": [
+          {
+            "value": "synthetic-business-id"
+          }
+        ],
+        "status": "active",
+        "scope": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "provision": {}
+      }
+    },
+    {
+      "resourceType": "Composition",
+      "input": {
+        "resourceType": "Composition",
+        "id": "synthetic-internal-id",
+        "identifier": {
+          "value": "synthetic-business-id"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456",
+              "display": "Synthetic concept"
+            }
+          ]
+        },
+        "title": "Synthetic document",
+        "date": "2026-01-01T00:00:00Z",
+        "author": [
+          {
+            "reference": "Organization/synthetic-author"
+          }
+        ]
+      },
+      "claims": {
+        "@context": "org.hl7.fhir.api",
+        "Composition.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+        "Composition.author": "Organization/synthetic-author",
+        "Composition.date": "2026-01-01T00:00:00Z",
+        "Composition.type": "http://snomed.info/sct|123456",
+        "Composition.identifier": "synthetic-business-id",
+        "Composition.title": "Synthetic document"
+      },
+      "native": {
+        "resourceType": "Composition",
+        "identifier": {
+          "value": "synthetic-business-id"
+        },
+        "subject": {
+          "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+        },
+        "author": [
+          {
+            "reference": "Organization/synthetic-author"
+          }
+        ],
+        "date": "2026-01-01T00:00:00Z",
+        "title": "Synthetic document",
+        "type": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "123456"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "components": {
+    "input": {
+      "resourceType": "Observation",
+      "id": "synthetic-internal-id",
+      "identifier": [
+        {
+          "value": "synthetic-business-id"
+        }
+      ],
+      "status": "final",
+      "subject": {
+        "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "123456",
+            "display": "Synthetic concept"
+          }
+        ]
+      },
+      "component": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8480-6",
+                "display": "Synthetic systolic, seated"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 120,
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]",
+            "unit": "mm[Hg]"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8462-4"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 0,
+            "unit": "Synthetic unit"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8310-5",
+                "display": "Synthetic temperature"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "claims": {
+      "@context": "org.hl7.fhir.api",
+      "Observation.code": "http://snomed.info/sct|123456",
+      "Observation.code-system": "http://snomed.info/sct",
+      "Observation.code-value": "123456",
+      "Observation.code-display": "Synthetic concept",
+      "Observation.identifier": "synthetic-business-id",
+      "Observation.patient": "urn:uuid:00000000-0000-4000-8000-000000000001",
+      "Observation.status": "final",
+      "Observation.subject": "urn:uuid:00000000-0000-4000-8000-000000000001",
+      "Observation.component-code": "[\"http://loinc.org|8480-6\",\"http://loinc.org|8462-4\",\"http://loinc.org|8310-5\"]",
+      "Observation.component-code-display": "[\"Synthetic systolic, seated\",\"\",\"Synthetic temperature\"]",
+      "Observation.component-value-quantity-number": "[\"120\",\"0\",\"\"]",
+      "Observation.component-value-quantity-unit": "[\"http://unitsofmeasure.org|mm[Hg]\",\"Synthetic unit\",\"\"]"
+    },
+    "native": {
+      "resourceType": "Observation",
+      "identifier": [
+        {
+          "value": "synthetic-business-id"
+        }
+      ],
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "123456",
+            "display": "Synthetic concept"
+          }
+        ]
+      },
+      "subject": {
+        "reference": "urn:uuid:00000000-0000-4000-8000-000000000001"
+      },
+      "component": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8480-6",
+                "display": "Synthetic systolic, seated"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 120,
+            "unit": "http://unitsofmeasure.org|mm[Hg]",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8462-4"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 0,
+            "unit": "Synthetic unit",
+            "code": "Synthetic unit"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8310-5",
+                "display": "Synthetic temperature"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
