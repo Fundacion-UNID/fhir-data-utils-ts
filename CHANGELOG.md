@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.2
+## 0.8.0
 
 - Expose a neutral native Parameters builder for repeated primitive search values, preserving false and zero and rejecting non-finite numbers.
 
@@ -13,6 +13,8 @@
   identify indexed profile extensions separately from standard FHIR fields.
 - Add a scalar vital-sign exchange bridge using canonical compact coding and
   the existing Observation converter, without performer or access authority.
+
+## 0.7.2
 
 - Preserve explicit R4 document imports containing Device, Location, Coverage,
   Appointment and AppointmentResponse through their existing owned converters.
