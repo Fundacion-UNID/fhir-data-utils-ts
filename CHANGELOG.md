@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.1
 
 - Preserve supplied coding tokens in clinical card titles when source labels are absent, including minimized native resources. The existing translation callback can supply a missing English/source-language label; known labels and other-language precedence remain unchanged. Display does not confirm coding validity.
 - Keep the separate local/international-label reader from representing a code
