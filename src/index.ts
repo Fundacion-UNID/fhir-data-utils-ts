@@ -38,4 +38,9 @@ export * from './communication-categories.js'
 export * from './operation-outcome.js'
 export * from './hl7-personal-relationships.js'
 export * from './clinical-resource-view.js'
+
+export * from './clinical-resource-adapters.js'
+export * from './communication-participant-search.js'
+export * from './fhir-parameters.js'
+
 export * from './document-bundle-r4.js'

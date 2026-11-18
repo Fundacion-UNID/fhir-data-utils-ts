@@ -64,3 +64,10 @@ export const CommunicationClaim = {
 } as const;
 
 export type CommunicationClaimKey = typeof CommunicationClaim[keyof typeof CommunicationClaim];
+
+/** Persisted participant projection indexes for the Communication search profile; these are not standard FHIR element names. */
+export const CommunicationParticipantIndexClaim = Object.freeze({
+  ParticipantToken: 'Communication.participant-token',
+  SenderToken: 'Communication.sender-token',
+  RecipientToken: 'Communication.recipient-token',
+} as const)

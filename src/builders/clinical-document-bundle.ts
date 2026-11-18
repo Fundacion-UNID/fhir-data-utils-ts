@@ -13,10 +13,11 @@ export type ClinicalDocumentBundleInput=Readonly<{
   documentId:string;compositionId:string;subjectReference:string;title:string;documentType:string;date:string
   status:'preliminary'|'final'|'amended'|'entered-in-error';sectionCodeSystem?:string
   authorReferences:readonly string[];attesters?:readonly ClinicalDocumentAttester[];language?:string
+  subjectProjection?:Readonly<Pick<ClinicalDocumentResource,'resourceType'> & {id:string;fullUrl?:string}>
   sections?:readonly Readonly<{code:string;title?:string}>[];entries:readonly ClinicalDocumentEntry[]
 }>
 export type ClinicalDocumentResource=Readonly<{resourceType:string;id?:string;meta?:Readonly<{claims:Readonly<Record<string,unknown>>}>;[key:string]:unknown}>
-export type ClinicalDocumentBundle=Readonly<{resourceType:'Bundle';type:'document';id:string;entry:readonly Readonly<{resource:ClinicalDocumentResource}>[]}>
+export type ClinicalDocumentBundle=Readonly<{resourceType:'Bundle';type:'document';id:string;entry:readonly Readonly<{resource:ClinicalDocumentResource;fullUrl?:string}>[]}>
 
 /** Pure document assembly. Callers own identifiers, provenance and the decision to persist or sign. */
 export function buildClinicalDocumentBundle(input:ClinicalDocumentBundleInput):ClinicalDocumentBundle{
@@ -67,6 +68,18 @@ export function buildClinicalDocumentBundle(input:ClinicalDocumentBundleInput):C
   const composition:ClinicalDocumentResource={...compositionFlatToFhirR4(nativeCompositionClaims),id:input.compositionId,
     ...(input.language?{language:input.language}:{}),section:[...sections.values()],meta:{claims:compositionClaims}}
   const match=/^([A-Z][A-Za-z0-9]+)\/([^/]+)$/u.exec(subject)
-  const subjectEntry=match&&!seen.has(subject)?[{resource:{resourceType:match[1],id:match[2]}}]:[]
+  let subjectEntry:Readonly<{resource:ClinicalDocumentResource;fullUrl?:string}>[]=match&&!seen.has(subject)?[{resource:{resourceType:match[1],id:match[2]}}]:[]
+  if(input.subjectProjection){
+    const projection=input.subjectProjection
+    const type=required(projection.resourceType,'subject_projection_type'),id=required(projection.id,'subject_projection_id')
+    if(!/^[A-Z][A-Za-z0-9]+$/u.test(type)||!/^[A-Za-z0-9.-]{1,64}$/u.test(id))throw new TypeError('clinical_document_subject_projection_identity_invalid')
+    if(seen.has(`${type}/${id}`))throw new TypeError('clinical_document_duplicate_subject_projection')
+    if(match){
+      if(match[1]!==type||match[2]!==id||projection.fullUrl)throw new TypeError('clinical_document_subject_projection_mismatch')
+    }else if(!/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(subject)||projection.fullUrl!==subject){
+      throw new TypeError('clinical_document_subject_projection_mismatch')
+    }
+    subjectEntry=[{resource:{resourceType:type,id},...(projection.fullUrl?{fullUrl:projection.fullUrl}:{})}]
+  }
   return {resourceType:'Bundle',type:'document',id:required(input.documentId,'id'),entry:[{resource:composition},...subjectEntry,...entries]}
 }

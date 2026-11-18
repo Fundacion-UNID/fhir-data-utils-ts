@@ -91,6 +91,16 @@ description: Complete or audit migrations, claim catalogs, converters, builders,
 - Preserve terminology-map relationship evidence. Only a strict reviewed
   equivalence may be selected automatically; wider, related, inexact and
   unmatched mappings require terminology governance.
+- Reuse `normalizeClaimsFromFhirResource` and `convertClaimsToFhirResource` at
+  native R4 adapter boundaries. Preserve explicit claims, primary business
+  identifiers and timestamp/language data without treating technical ids as
+  business identity. Version-specific claim namespaces remain invalid.
+- Communication participant matching and Parameters construction are pure data
+  projections. Actor/user/target controls are declared profile extensions,
+  never an authorization grant or a substitute for caller verification.
+- An explicit document `subjectProjection` is caller-owned native context. Its
+  absolute full URL must match the Composition subject; never infer a Patient
+  index identity or access permission from that context resource.
 - Keep native R5 SubscriptionTopic/Subscription configuration and notification
   Bundle parsing separate from the claims-first Communication being delivered.
   This package owns their reusable types and validation, never HTTP delivery,

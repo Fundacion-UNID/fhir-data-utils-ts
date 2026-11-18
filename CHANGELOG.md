@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased
+## 0.8.0
+
+- Expose a neutral native Parameters builder for repeated primitive search values, preserving false and zero and rejecting non-finite numbers.
+
+- Expose the complete IPS all-sections reference JSON through a public fixture subpath, preserving its reference bytes for independent consumer integration tests.
+
+- Own native R4 import/export adapters over the existing converters, preserving
+  explicit claims, business identifiers, language and supported structural
+  fallback. Keep qualified API syntax distinct from version-specific contexts.
+- Own pure Communication participant projection filtering and pagination;
+  identify indexed profile extensions separately from standard FHIR fields.
+- Add a scalar vital-sign exchange bridge using canonical compact coding and
+  the existing Observation converter, without performer or access authority.
 
 ## 0.7.2
 
