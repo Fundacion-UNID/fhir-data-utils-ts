@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Preserve supplied coding tokens in clinical card titles when source labels are absent, including minimized native resources. The existing translation callback can supply a missing English/source-language label; known labels and other-language precedence remain unchanged. Display does not confirm coding validity.
+- Keep the separate local/international-label reader from representing a code
+  token as local text. Pin the checksum-protected public IPS fixture to LF on
+  every checkout so Windows and Unix package identical reference bytes.
+
 ## 0.8.0
 
 - Expose a neutral native Parameters builder for repeated primitive search values, preserving false and zero and rejecting non-finite numbers.

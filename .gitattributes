@@ -1,0 +1,3 @@
+# The public reference fixture has a byte-level checksum and must package alike
+# on Windows and Unix checkouts.
+/fixtures/fhir-ips-bundle-all-sections.json text eol=lf

@@ -284,6 +284,8 @@ The `clinical-resource-view` subpath exports
 retain supplied local wording alongside international displays. Rendering a
 label does not accept a coding proposal or authorize access to another record.
 
+When a card has no source label, its existing translation callback may provide one. If no label is available, the reader displays the supplied `system|code` token before falling back to a resource type. This preserves information in minimized native bundles without translating or validating the coding. Known local/international labels retain their existing precedence.
+
 The `clinical-document-bundle` subpath exports `buildClinicalDocumentBundle`
 and `FHIR_IPS_DOCUMENT_TYPE_CLAIM`; the builder is also available through
 `builders` and the package root. It assembles a Composition-first native

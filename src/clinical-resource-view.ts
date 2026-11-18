@@ -65,7 +65,7 @@ function primaryClaim(resourceType:string):string{
     default:return `${resourceType}.code`
   }
 }
-function titleFor(resource:ClinicalResourceLike,claims:Record<string,unknown>,options:ClinicalResourceDisplayOptions):string{
+function titleFor(resource:ClinicalResourceLike,claims:Record<string,unknown>,options:ClinicalResourceDisplayOptions,allowCodeFallback=true):string{
   const type=resource.resourceType??'',concept=primaryConcept(resource),coding=record(list(record(concept).coding)[0])
   if(type==='Communication'){
     const payload=record(list(resource.payload)[0])
@@ -90,7 +90,16 @@ function titleFor(resource:ClinicalResourceLike,claims:Record<string,unknown>,op
   const names=list(resource.name).map(value=>first(record(value).text,[...list(record(value).given),record(value).family].map(text).filter(Boolean).join(' '))).filter(Boolean)
   const device=record(resource.device)
   const fallback=first(claims[`${type}.title`],claims[`${type}.description`],claims[`${type}.summary`],type==='Device'?claims[Claims.DeviceClaim.DeviceName]:undefined,resource.title,resource.description,resource.summary,typeof resource.name==='string'?resource.name:undefined,...names,device.display,record(resource.medicationReference).display,record(list(resource.content)[0]).attachment&&record(record(list(resource.content)[0]).attachment).title)
-  return fallback||type
+  if(fallback)return fallback
+  // Missing source labels may still use the caller's terminology projection in
+  // English or the source language. A token fallback displays supplied coding;
+  // it does not validate that coding or invent a clinical translation.
+  if(codeToken&&options.translateCode&&(!locale||locale==='en'||locale===resourceLanguage)){
+    const separator=codeToken.indexOf('|')
+    const translated=text(options.translateCode({resourceType:type,...(separator>=0?{system:codeToken.slice(0,separator)}:{}),code:separator>=0?codeToken.slice(separator+1):codeToken,token:codeToken,locale:locale||resourceLanguage||'und'}))
+    if(translated)return translated
+  }
+  return (allowCodeFallback?codeToken:undefined)||type
 }
 
 /** Preserves supplied local and international labels; it neither translates nor confirms a coding. */
@@ -99,7 +108,7 @@ export function getLocalTextAndIntDisplay(resource:ClinicalResourceLike):LocalTe
   const claims=Object.fromEntries(fields.map(field=>[field.claim,field.value]))
   const type=resource.resourceType??'Unknown',concept=record(primaryConcept(resource))
   const readSuffix=(...suffixes:string[])=>first(...suffixes.flatMap(suffix=>fields.filter(field=>field.parameter===suffix).map(field=>field.value)))
-  const localText=first(concept.text,readSuffix('code-text','code-text-local','codetextlocal','medication-text','vaccine-code-text','value-concept-text'))||titleFor({...resource,resourceType:type},claims,{})
+  const localText=first(concept.text,readSuffix('code-text','code-text-local','codetextlocal','medication-text','vaccine-code-text','value-concept-text'))||titleFor({...resource,resourceType:type},claims,{},false)
   const internationalDisplay=first(...list(concept.coding).map(value=>record(value).display),readSuffix('code-display','codedisplay','vaccine-code-display','value-concept-display'))
   const combined=localText&&internationalDisplay&&localText!==internationalDisplay?`${localText} (${internationalDisplay})`:localText||internationalDisplay
   return {...(localText?{localText}:{}),...(internationalDisplay?{internationalDisplay}:{}),...(combined?{combined}:{})}

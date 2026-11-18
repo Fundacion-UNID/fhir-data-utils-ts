@@ -42,3 +42,34 @@ test('resource cards preserve quantitative values and every canonical editable f
   assert.equal(card.referenceRangeText,claims[fhir.ObservationClaim.ReferenceRangeText]);
   assert.equal(card.fields.length,Object.keys(claims).length);
 });
+
+test('minimal native Procedure and Immunization cards retain canonical coding tokens when labels are absent',()=>{
+ for(const [resourceType,field,code] of [['Procedure','code','synthetic-procedure'],['Immunization','vaccineCode','synthetic-vaccine']]){
+  const system='urn:synthetic:clinical-codes',resource={resourceType,[field]:{coding:[{system,code}]}},before=structuredClone(resource)
+  assert.equal(fhir.toClinicalResourceCardView({resource},{locale:'en'}).title,system+'|'+code)
+  assert.equal(fhir.toClinicalResourceCardView({resource}).title,system+'|'+code)
+  assert.deepEqual(resource,before)
+ }
+})
+test('English missing-label projection invokes the existing explicit terminology callback before a code/type fallback',()=>{
+ const seen=[],resource={resourceType:'Procedure',code:{coding:[{system:'urn:synthetic:clinical-codes',code:'synthetic-procedure'}]}}
+ const view=fhir.toClinicalResourceCardView({resource},{locale:'en',translateCode:input=>{seen.push(input);return 'Host-supplied procedure label'}})
+ assert.equal(view.title,'Host-supplied procedure label')
+ assert.deepEqual(seen,[{resourceType:'Procedure',system:'urn:synthetic:clinical-codes',code:'synthetic-procedure',token:'urn:synthetic:clinical-codes|synthetic-procedure',locale:'en'}])
+})
+test('native minimized Composition aliases reach the same code-only resource display without source rewriting',()=>{
+ const bundle={resourceType:'Bundle',type:'document',entry:[{fullUrl:'resource:0',resource:{resourceType:'Composition',section:[{title:'Recorded synthetic care',entry:[{reference:'resource:1'}]}]}},{fullUrl:'resource:1',resource:{resourceType:'Procedure',code:{coding:[{system:'urn:synthetic:clinical-codes',code:'synthetic-procedure'}]}}}]},before=structuredClone(bundle)
+ const views=fhir.toClinicalSectionViews(bundle,{locale:'en',translateCode:({token})=>token})
+ assert.equal(views[0].resources[0].title,'urn:synthetic:clinical-codes|synthetic-procedure')
+ assert.deepEqual(bundle,before)
+})
+test('known native labels, non-English translation precedence and uncoded resource fallbacks remain unchanged',()=>{
+ const resource={resourceType:'Procedure',language:'es',code:{text:'Source manual wording',coding:[{system:'urn:synthetic:clinical-codes',code:'synthetic-procedure',display:'Known international wording'}]}},before=structuredClone(resource),calls=[]
+ assert.equal(fhir.toClinicalResourceCardView({resource},{locale:'en',translateCode:input=>{calls.push(input);return 'Unexpected replacement'}}).title,'Known international wording')
+ assert.equal(fhir.toClinicalResourceCardView({resource},{locale:'es',translateCode:input=>{calls.push(input);return 'Unexpected replacement'}}).title,'Source manual wording')
+ assert.equal(calls.length,0)
+ assert.equal(fhir.toClinicalResourceCardView({resource},{locale:'fr',translateCode:()=> 'Localized caller wording'}).title,'Localized caller wording')
+ assert.equal(fhir.toClinicalResourceCardView({resource:{resourceType:'Procedure',title:'Existing manual title',code:{coding:[{system:'urn:synthetic:clinical-codes',code:'synthetic-procedure'}]}}},{locale:'en'}).title,'Existing manual title')
+ assert.equal(fhir.toClinicalResourceCardView({resource:{resourceType:'Procedure'}},{locale:'en'}).title,'Procedure')
+ assert.deepEqual(resource,before)
+})
